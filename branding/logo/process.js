@@ -1,0 +1,6 @@
+const {chromium}=require('playwright');const fs=require('fs');(async()=>{const d=process.argv[2];
+const card=(f,t,s)=>`<div style="background:#fff;border-radius:14px;padding:18px;box-shadow:0 2px 10px rgba(0,0,0,.08)"><img src="${f}" style="width:100%;display:block;border-radius:8px"><div style="font:700 22px Montserrat,sans-serif;margin-top:14px;color:#141414">${t}</div><div style="font:15px sans-serif;color:#555;margin-top:4px">${s}</div></div>`;
+const h=`<body style="margin:0;padding:36px;background:#F1EFEA;width:1728px;font-family:sans-serif"><div style="font:800 34px sans-serif;color:#141414;margin-bottom:22px">HEZSEY Safety Suppliers — logo process</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">${card('step1-sketch.svg','1 · Sketch','Shape first: hat, speed lines, ring, text on a grid.')}${card('step2-colour.svg','2 · Colour','Flat safety orange + black: prints on anything.')}${card('badge.svg','3 · Final','Shading, ridges, inner ring, real gaps in the ring.')}</div></body>`;
+fs.writeFileSync(d+'/_p.html',h);const b=await chromium.launch();const p=await b.newPage({viewport:{width:1800,height:800}});
+await p.goto('file://'+d+'/_p.html');await p.screenshot({path:d+'/process.png',fullPage:true});fs.unlinkSync(d+'/_p.html');await b.close();})();
