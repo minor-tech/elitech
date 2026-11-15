@@ -35,7 +35,7 @@ def hat_color(): return (f'<path fill="url(#og)" d="{SHELL}"/><path fill="#FFB46
                          f'<path fill="#fff" opacity=".35" d="{SHINE}"/><path fill="url(#rim)" d="{BRIM}"/>')
 def hat_flat(): return (f'<path fill="{OR}" d="{SHELL}"/><path fill="#FF8A3D" d="{RIDGE}"/><path fill="#C93A06" d="{BRIM}"/>')
 def lines_fill(col): return "".join(f'<path fill="{col}" d="{d}"/>' for d in line_paths())
-def lines_mask(): return "".join(f'<path fill="black" stroke="black" stroke-width="12" stroke-linejoin="round" d="{d}"/>' for d in line_paths())
+def lines_mask(): return '<path fill="black" d="M-160 88 H-10 V164 H-160 Z"/>'
 
 def badge(mode="final",dark=False):
     S=640; c=S/2; fg=WH if dark else BK; tf="translate(146 34) scale(1.3)"
@@ -58,8 +58,8 @@ def badge(mode="final",dark=False):
     nm=C(NAME,c,404,100,800,8,fg)
     sp=C("SAFETY SUPPLIERS",c,460,30,700,5,OR)
     tw=W("SAFETY GEAR DELIVERED",19,600,4)
-    tg=(C("SAFETY GEAR DELIVERED",c,516,19,600,4,fg)+f'<rect x="{c-tw/2-40}" y="509" width="24" height="3" fill="{OR}"/>'
-        f'<rect x="{c+tw/2+16}" y="509" width="24" height="3" fill="{OR}"/>')
+    tg=(C("SAFETY GEAR DELIVERED",c,516,19,600,4,fg)+f'<rect x="{c-tw/2-30}" y="509" width="16" height="3" fill="{OR}"/>'
+        f'<rect x="{c+tw/2+14}" y="509" width="16" height="3" fill="{OR}"/>')
     return svg(S,S,mask+ring+f'<g transform="{tf}">{lines_fill(OR)}{hat}</g>'+nm+sp+tg,BK if dark else None)
 
 def icon_badge(dark=False):
@@ -81,3 +81,24 @@ for d in (False,True):
     open(f"{OUT}/badge{s}.svg","w").write(badge("final",d))
     open(f"{OUT}/icon-badge{s}.svg","w").write(icon_badge(d))
     open(f"{OUT}/horizontal{s}.svg","w").write(horizontal(d))
+
+# ---------- four document samples ----------
+import os
+FO=os.path.join(os.path.dirname(OUT),"final"); os.makedirs(FO,exist_ok=True)
+def no_border():
+    S=640; c=S/2
+    body=(f'<g transform="translate(146 0) scale(1.3)">{lines_fill(OR)}{hat_color()}</g>'
+          +C(NAME,c,350,100,800,8,BK)+C("SAFETY SUPPLIERS",c,406,30,700,5,OR))
+    tw=W("SAFETY GEAR DELIVERED",19,600,4)
+    body+=(C("SAFETY GEAR DELIVERED",c,460,19,600,4,BK)+f'<rect x="{c-tw/2-40}" y="453" width="24" height="3" fill="{OR}"/>'
+           f'<rect x="{c+tw/2+16}" y="453" width="24" height="3" fill="{OR}"/>')
+    return svg(S,500,body)
+def simple():
+    S=640; c=S/2; tf="translate(146 34) scale(1.3)"
+    mask=f'<mask id="rm"><rect width="{S}" height="{S}" fill="white"/><g transform="{tf}">{lines_mask()}</g></mask>'
+    ring=f'<circle cx="{c}" cy="{c}" r="{c-28}" fill="none" stroke="{OR}" stroke-width="16" mask="url(#rm)"/>'
+    hat=f'<path fill="{OR}" d="{SHELL}"/><path fill="{BK}" d="{BRIM}"/>'
+    return svg(S,S,mask+ring+f'<g transform="{tf}">{lines_fill(OR)}{hat}</g>'+C(NAME,c,420,104,800,8,BK)+C("SAFETY SUPPLIERS",c,478,30,700,5,OR))
+open(f"{FO}/1-no-border.svg","w").write(no_border())
+open(f"{FO}/3-simple.svg","w").write(simple())
+open(f"{FO}/4-with-border.svg","w").write(badge("final"))
