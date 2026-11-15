@@ -32,7 +32,8 @@ def lines(bg,segs=((-104,100,14),(-118,127,17),(-100,154,14))):
     out=""
     for x0,y,h in segs:
         d=f"M{x0} {y} L56 {y-h/2} Q60 {y-h/2} 60 {y} Q60 {y+h/2} 56 {y+h/2} Z"
-        out+=f'<path d="{d}" fill="url(#ln)" stroke="{bg}" stroke-width="10" paint-order="stroke" stroke-linejoin="round"/>'
+        out+=(f'<path d="{d}" fill="black" stroke="black" stroke-width="12" stroke-linejoin="round"/>' if bg=="MASK"
+              else f'<path d="{d}" fill="url(#ln)"/>')
     return out
 def icon(bg,segs=None): return (lines(bg,segs) if segs else lines(bg))+HAT
 
@@ -43,16 +44,20 @@ def tagline(t,cx,y,size,fill,span):
 
 def badge(dark):
     bg=BK if dark else WH; fg=WH if dark else BK; S=640; c=S/2
-    ring=f'<circle cx="{c}" cy="{c}" r="{c-28}" fill="none" stroke="{OR}" stroke-width="16"/>'
-    ic=f'<g transform="translate(150 22) scale(1.32)">{icon(bg)}</g>'
+    tf="translate(150 22) scale(1.32)"
+    ring=(f'<mask id="rm"><rect width="{S}" height="{S}" fill="white"/><g transform="{tf}">{lines("MASK")}</g></mask>'
+          f'<circle cx="{c}" cy="{c}" r="{c-28}" fill="none" stroke="{OR}" stroke-width="16" mask="url(#rm)"/>')
+    ic=f'<g transform="{tf}">{icon(bg)}</g>'
     hz=C("HEZSY",c,396,112,800,10,fg)
     sp=C("SAFETY SUPPLIERS",c,456,32,700,5,OR)
     tg=tagline("SAFETY GEAR DELIVERED",c,518,20,fg,440)
     return svg(S,S,ring+ic+hz+sp+tg,bg if dark else None)
 def icon_badge(dark):
     bg=BK if dark else WH; S=256; c=128
-    ring=f'<circle cx="{c}" cy="{c}" r="112" fill="none" stroke="{OR}" stroke-width="12"/>'
-    ic=f'<g transform="translate(-6 10) scale(.92)">{icon(bg,((8,100,14),(-4,127,17),(10,154,14)))}</g>'
+    tf="translate(-6 10) scale(.92)"; sg=((8,100,14),(-4,127,17),(10,154,14))
+    ring=(f'<mask id="rm"><rect width="{S}" height="{S}" fill="white"/><g transform="{tf}">{lines("MASK",sg)}</g></mask>'
+          f'<circle cx="{c}" cy="{c}" r="112" fill="none" stroke="{OR}" stroke-width="12" mask="url(#rm)"/>')
+    ic=f'<g transform="{tf}">{icon(bg,sg)}</g>'
     return svg(S,S,ring+ic,bg if dark else None)
 def horizontal(dark):
     bg=BK if dark else WH; fg=WH if dark else BK
