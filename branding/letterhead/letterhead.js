@@ -10,7 +10,7 @@ const p=(runs,o={})=>new Paragraph({children:Array.isArray(runs)?runs:[runs],ali
 const contact=(s)=>new Paragraph({alignment:AlignmentType.RIGHT,spacing:{after:20},children:[t(s,{size:16,color:GR})]});
 const header=new Header({children:[
   new Table({width:{size:W,type:WidthType.DXA},columnWidths:[5400,4238],borders:{...noB,insideHorizontal:none,insideVertical:none},rows:[new TableRow({children:[
-    new TableCell({width:{size:5400,type:WidthType.DXA},borders:noB,verticalAlign:VerticalAlign.CENTER,children:[new Paragraph({children:[new ImageRun({type:"png",data:logo,transformation:{width:174,height:72}})]})]}),
+    new TableCell({width:{size:5400,type:WidthType.DXA},borders:noB,verticalAlign:VerticalAlign.CENTER,children:[new Paragraph({children:[new ImageRun({type:"png",data:logo,transformation:{width:190,height:78}})]})]}),
     new TableCell({width:{size:4238,type:WidthType.DXA},borders:noB,verticalAlign:VerticalAlign.CENTER,children:[
       contact("P.O. Box [number], Nairobi, Kenya"),contact("Tel: +254 [phone number]"),contact("Email: [email address]"),contact("Web: hezsysafety.co.ke")]})]})]}),
   new Paragraph({spacing:{before:80,after:0},border:{bottom:{style:BorderStyle.SINGLE,size:18,color:OR,space:1}},children:[]})]});
