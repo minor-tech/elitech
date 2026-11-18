@@ -55,3 +55,36 @@ If Remotion can't download its own headless Chrome, point it at a local one:
 
 - 120 BPM (15 frames per beat), so every 6s scene is exactly 12 beats; music and hits are synthesised in `scripts/make-sfx.mjs`.
 - One caption per scene, top third, ~4.3s hold; the kernel squash-bounces every 2s; the sleeping neighbour's Zzz grow each scene until the snot bubble pops.
+
+## Video #2 v2: dialogue + captions (`EnamelShortV2`)
+
+Same characters, reworked: two-character dialogue, word-by-word TikTok-style captions, SFX at fixed frames, a lo-fi bed that ducks under "I cracked", and a new visual beat every ~2s.
+
+| File | What it is |
+|---|---|
+| `src/audio/dialogueData.ts` | the 7 lines: character, text, frame window, voice file, start delay, edge-tts voice settings |
+| `src/audio/sfxData.ts` | SFX cues (frame, volume) + BGM volume/ducking |
+| `src/audio/voiceTimings.json` | generated: per-word frames + per-frame mouth loudness (do not edit by hand) |
+| `src/components/Captions.tsx` | word-by-word captions, top 25%, <=60% width, active word in gold |
+| `src/components/EndCard.tsx` | "Enamel can't heal. Protect it." from frame 810, bottom third |
+| `src/components/FactPop.tsx` | fact stickers between lines (frames 120 and 600) |
+| `src/enamelv2/` | the composition + reworked animation |
+
+### Audio: drop-in workflow
+
+Everything lives in **`public/assets/audio/`** (Remotion serves files from `public/` via `staticFile()`, so `src/assets` would not be bundled):
+
+```
+public/assets/audio/voiceover/hero_line1.mp3 ... neighbor_line3.mp3
+public/assets/audio/sfx/pop.mp3 skeptical_grunt.mp3 ice_crack.mp3 nut_crunch.mp3 glass_shatter.mp3 gasp.mp3 sad_trombone.mp3
+public/assets/audio/bgm/lofi_bgm.mp3
+```
+
+The committed files are **stand-ins** (espeak robot voices, synthesised SFX/BGM) so the video renders today. To upgrade:
+
+1. **Voices (free, edge-tts)** on your own machine: `pip install edge-tts && npm run voices`. This writes the 7 MP3s plus exact word timings (`*.words.json`).
+2. **SFX / BGM**: download from Pixabay / Mixkit / Uppbeat and save over the files above with the same names (any length; volumes live in `sfxData.ts`).
+3. `npm run timings`: re-syncs captions and talking mouths to the new audio and warns if a line runs past its window.
+4. `npm run render:enamel-v2` -> `out/enamel-short-v2.mp4`
+
+`npm run audio:v2` recreates missing stand-ins and never overwrites existing files (`-- --force` to regenerate them).

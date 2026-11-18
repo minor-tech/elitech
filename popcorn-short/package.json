@@ -8,7 +8,11 @@
     "sfx": "node scripts/make-sfx.mjs",
     "render": "remotion render PopcornShort out/popcorn-short.mp4",
     "stills": "node scripts/render-stills.mjs",
-    "render:enamel": "remotion render EnamelShort out/enamel-short.mp4"
+    "render:enamel": "remotion render EnamelShort out/enamel-short.mp4",
+    "audio:v2": "node scripts/make-v2-audio.mjs",
+    "voices": "python3 scripts/make_voices.py",
+    "timings": "node scripts/build-voice-timings.mjs",
+    "render:enamel-v2": "node scripts/build-voice-timings.mjs && remotion render EnamelShortV2 out/enamel-short-v2.mp4"
   },
   "dependencies": {
     "@remotion/bundler": "^4.0.545",

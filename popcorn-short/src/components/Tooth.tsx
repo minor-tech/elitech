@@ -32,6 +32,8 @@ type Props = {
   faceless?: boolean;
   brows?: Brows;
   armor?: Armor;
+  talk?: number; // 0..1 loudness of this tooth's voice right now -> talking mouth
+  overlay?: React.ReactNode; // drawn in front of the face, in tooth-local coords
   children?: React.ReactNode; // drawn in tooth-local coordinates (e.g. arms)
 };
 
@@ -179,6 +181,8 @@ export const Tooth: React.FC<Props> = ({
   faceless = false,
   brows = 'none',
   armor,
+  talk = 0,
+  overlay,
   children,
 }) => {
   // anchor: bottom-centre of the visible crown (gum line, local y=360)
@@ -209,7 +213,14 @@ export const Tooth: React.FC<Props> = ({
             )}
             <Eye cx={EYE_L} kind={eyes} look={look} side={-1} />
             <Eye cx={EYE_R} kind={eyes} look={look} side={1} />
-            <MouthShape kind={mouth} frame={frame} />
+            {talk > 0.08 ? (
+              <g>
+                <ellipse cx={200} cy={276} rx={20 + talk * 6} ry={6 + talk * 24} fill={C.ink} />
+                <ellipse cx={200} cy={286 + talk * 10} rx={10 + talk * 3} ry={3 + talk * 7} fill={C.red} />
+              </g>
+            ) : (
+              <MouthShape kind={mouth} frame={frame} />
+            )}
           </g>
         )}
         {Array.from({length: sweat}).map((_, i) => {
@@ -236,6 +247,7 @@ export const Tooth: React.FC<Props> = ({
             />
           );
         })}
+        {overlay}
       </g>
     </g>
   );
