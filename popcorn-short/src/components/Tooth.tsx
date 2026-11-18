@@ -3,6 +3,12 @@ import {C} from '../theme';
 
 export type Eyes = 'closed' | 'open' | 'wide' | 'squeeze' | 'half' | 'relief';
 export type Mouth = 'smile' | 'flat' | 'frown' | 'wavy' | 'o' | 'grit' | 'grin' | 'none';
+export type Brows = 'none' | 'proud' | 'worried' | 'determined';
+export type Armor = {
+  crack?: number; // 0..1 how far the crack has spread
+  chip?: boolean; // a piece is missing from the right cusp (dentin shows)
+  shine?: number; // 0..1 sweep position of a shine band; omit for none
+};
 
 export const TOOTH_PATH =
   'M 50 180 C 30 60, 130 10, 160 50 C 185 80, 215 80, 240 50 C 270 10, 370 60, 350 180 ' +
@@ -24,6 +30,8 @@ type Props = {
   tilt?: number;
   throb?: number; // extra uniform scale (pulse)
   faceless?: boolean;
+  brows?: Brows;
+  armor?: Armor;
   children?: React.ReactNode; // drawn in tooth-local coordinates (e.g. arms)
 };
 
@@ -169,6 +177,8 @@ export const Tooth: React.FC<Props> = ({
   tilt = 0,
   throb = 1,
   faceless = false,
+  brows = 'none',
+  armor,
   children,
 }) => {
   // anchor: bottom-centre of the visible crown (gum line, local y=360)
@@ -187,8 +197,10 @@ export const Tooth: React.FC<Props> = ({
         {redTint > 0 && (
           <path d={TOOTH_PATH} fill={C.red} opacity={0.55 * redTint} stroke="none" />
         )}
+        {armor && <ArmorShell {...armor} />}
         {!faceless && (
           <g>
+            <BrowShape kind={brows} />
             {darkCircles && (
               <>
                 <path d={`M ${EYE_L - 34} ${EYE_Y + 44} Q ${EYE_L} ${EYE_Y + 66} ${EYE_L + 34} ${EYE_Y + 44}`} stroke="#9A86A8" strokeWidth={10} fill="none" strokeLinecap="round" />
@@ -228,3 +240,62 @@ export const Tooth: React.FC<Props> = ({
     </g>
   );
 };
+
+const BrowShape: React.FC<{kind: Brows}> = ({kind}) => {
+  if (kind === 'none') return null;
+  const d =
+    kind === 'proud'
+      ? `M ${EYE_L - 32} ${EYE_Y - 44} Q ${EYE_L} ${EYE_Y - 62} ${EYE_L + 30} ${EYE_Y - 48} M ${EYE_R - 30} ${EYE_Y - 48} Q ${EYE_R} ${EYE_Y - 62} ${EYE_R + 32} ${EYE_Y - 44}`
+      : kind === 'worried'
+        ? `M ${EYE_L - 30} ${EYE_Y - 46} L ${EYE_L + 28} ${EYE_Y - 64} M ${EYE_R - 28} ${EYE_Y - 64} L ${EYE_R + 30} ${EYE_Y - 46}`
+        : `M ${EYE_L - 30} ${EYE_Y - 64} L ${EYE_L + 28} ${EYE_Y - 46} M ${EYE_R - 28} ${EYE_Y - 46} L ${EYE_R + 30} ${EYE_Y - 64}`;
+  return <path d={d} stroke={C.ink} strokeWidth={11} strokeLinecap="round" fill="none" />;
+};
+
+// Enamel armour: a polished cap over the crown, gold trim, an ENAMEL name plate.
+const ARMOR =
+  'M 44 128 C 26 50, 128 2, 160 42 C 185 72, 215 72, 240 42 C 272 2, 374 50, 356 128 Q 200 104 44 128 Z';
+const CRACK = 'M 306 50 L 294 68 L 312 82 L 297 100 L 308 118';
+const CRACK_LEN = 95;
+
+const ArmorShell: React.FC<Armor> = ({crack = 0, chip = false, shine}) => (
+  <g>
+    <defs>
+      <linearGradient id="armorFill" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#FFFFFF" />
+        <stop offset="100%" stopColor="#C9CED8" />
+      </linearGradient>
+      <clipPath id="armorClip">
+        <path d={ARMOR} />
+      </clipPath>
+    </defs>
+    <path d={ARMOR} fill="url(#armorFill)" stroke="#6E7380" strokeWidth={12} strokeLinejoin="round" />
+    {shine !== undefined && (
+      <g clipPath="url(#armorClip)">
+        <rect x={-120 + shine * 560} y={-20} width={46} height={220} fill="#FFFFFF" opacity={0.95} transform={`skewX(-24)`} />
+        <rect x={-60 + shine * 560} y={-20} width={16} height={220} fill="#FFFFFF" opacity={0.8} transform={`skewX(-24)`} />
+      </g>
+    )}
+    <path d="M 44 128 Q 200 104 356 128" stroke={C.gold} strokeWidth={14} fill="none" strokeLinecap="round" />
+    <path d="M 44 128 Q 200 104 356 128" stroke={C.ink} strokeWidth={4} fill="none" strokeLinecap="round" opacity={0.35} />
+    <circle cx={86} cy={110} r={7} fill={C.gold} stroke={C.ink} strokeWidth={3} />
+    <circle cx={314} cy={110} r={7} fill={C.gold} stroke={C.ink} strokeWidth={3} />
+    <rect x={112} y={70} width={176} height={38} rx={12} fill={C.gold} stroke={C.ink} strokeWidth={5} />
+    <text x={200} y={90} textAnchor="middle" dominantBaseline="middle" fontFamily="Fredoka" fontWeight={700} fontSize={30} fill={C.ink} letterSpacing={2}>
+      ENAMEL
+    </text>
+    {chip && <path d="M 286 22 L 322 30 L 330 58 L 302 52 Z" fill="#FFF3D1" stroke={C.ink} strokeWidth={6} strokeLinejoin="round" />}
+    {crack > 0 && (
+      <path
+        d={CRACK}
+        stroke={C.ink}
+        strokeWidth={7}
+        fill="none"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeDasharray={CRACK_LEN}
+        strokeDashoffset={CRACK_LEN * (1 - Math.min(1, crack))}
+      />
+    )}
+  </g>
+);

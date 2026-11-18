@@ -2,22 +2,23 @@ import React from 'react';
 import {Easing, interpolate, useCurrentFrame} from 'remotion';
 import {C, TEXT_Y, bounce, clamp, fontFamily} from '../theme';
 
-const HOLD = 60; // 2 seconds on screen at full size
+const HOLD = 60; // default: 2 seconds on screen at full size
 const IN = 10;
 const OUT = 9;
 
 /** Bold rounded caption, white with dark outline. Bounces in, holds 2s, bounces out. Max 5 words. */
-export const TextCard: React.FC<{lines: string[]; start: number; size?: number; y?: number}> = ({
+export const TextCard: React.FC<{lines: string[]; start: number; size?: number; y?: number; hold?: number}> = ({
   lines,
   start,
   size = 100,
   y = TEXT_Y,
+  hold = HOLD,
 }) => {
   const f = useCurrentFrame();
   const words = lines.join(' ').trim().split(/\s+/).length;
   if (words > 5) throw new Error(`TextCard over 5 words: "${lines.join(' ')}"`);
   if (f < start) return null;
-  const outAt = start + IN + HOLD;
+  const outAt = start + IN + hold;
   const sIn = bounce(f, start);
   const outT = interpolate(f, [outAt, outAt + OUT], [0, 1], {...clamp, easing: Easing.in(Easing.back(2))});
   if (outT >= 1) return null;

@@ -6,14 +6,16 @@ import {dirname, join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const frames = process.argv.slice(2).map(Number);
+const args = process.argv.slice(2);
+const compId = args[0] && isNaN(Number(args[0])) ? args.shift() : 'PopcornShort';
+const frames = args.map(Number);
 const list = frames.length ? frames : [0, 150, 400, 700];
-const outDir = join(root, 'out', 'stills');
+const outDir = join(root, 'out', compId === 'PopcornShort' ? 'stills' : `stills-${compId}`);
 mkdirSync(outDir, {recursive: true});
 
 const browserExecutable = process.env.REMOTION_BROWSER || null;
 const serveUrl = await bundle({entryPoint: join(root, 'src', 'index.ts')});
-const composition = await selectComposition({serveUrl, id: 'PopcornShort', browserExecutable});
+const composition = await selectComposition({serveUrl, id: compId, browserExecutable});
 for (const frame of list) {
   const output = join(outDir, `frame-${String(frame).padStart(3, '0')}.png`);
   await renderStill({serveUrl, composition, frame, output, browserExecutable});

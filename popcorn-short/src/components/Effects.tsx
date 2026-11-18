@@ -3,8 +3,8 @@ import {interpolate, random, spring} from 'remotion';
 import {C, FPS, SPRING, clamp, fontFamily} from '../theme';
 
 /** Floating "z z z" above a sleeper. */
-export const Zzz: React.FC<{frame: number; x: number; y: number; opacity?: number}> = ({frame, x, y, opacity = 1}) => (
-  <g opacity={opacity}>
+export const Zzz: React.FC<{frame: number; x: number; y: number; opacity?: number; scale?: number}> = ({frame, x, y, opacity = 1, scale = 1}) => (
+  <g opacity={opacity} transform={`translate(${x} ${y}) scale(${scale}) translate(${-x} ${-y})`}>
     {[0, 1, 2].map((i) => {
       const period = 54;
       const t = (((frame + i * 18) % period) + period) % period / period;
