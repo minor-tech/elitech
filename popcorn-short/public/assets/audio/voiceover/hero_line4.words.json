@@ -1,0 +1,37 @@
+[
+ {
+  "text": "I",
+  "startMs": 0.0,
+  "endMs": 80.0
+ },
+ {
+  "text": "can't,",
+  "startMs": 80.0,
+  "endMs": 440.0
+ },
+ {
+  "text": "nobody",
+  "startMs": 580.0,
+  "endMs": 760.0
+ },
+ {
+  "text": "can,",
+  "startMs": 760.0,
+  "endMs": 1080.0
+ },
+ {
+  "text": "I'm",
+  "startMs": 1320.0,
+  "endMs": 1420.0
+ },
+ {
+  "text": "dead",
+  "startMs": 1420.0,
+  "endMs": 1540.0
+ },
+ {
+  "text": "tissue.",
+  "startMs": 1540.0,
+  "endMs": 1760.0
+ }
+]

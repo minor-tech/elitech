@@ -189,7 +189,8 @@ def main():
         results = []
         take = 0
         # at least --takes takes; keep going (up to --max-takes) until one says every word right
-        while take < max(1, args.takes) or (take < args.max_takes and max(r["accuracy"] for r in results) < 0.99):
+        good = lambda: any(r["accuracy"] >= 0.99 and r["on_pitch"] for r in results)
+        while take < max(1, args.takes) or (take < args.max_takes and not good()):
             take += 1
             torch.manual_seed(args.seed + take * 1000 + sum(map(ord, l["id"])))
             wav = model.generate(
@@ -220,14 +221,17 @@ def main():
             swing = pitch_swing(y, model.sr)
             rate = n_syl / final_len
             fits = final_len <= l["slot_s"]
-            score = 3 * accuracy + 0.6 * min(swing, 14) / 14 - 0.5 * abs(rate - TARGET_RATE) / TARGET_RATE - (0 if fits else 2)
-            results.append({"take": take, "mp3": mp3, "words": words, "score": score, "accuracy": accuracy})
+            # same character = same voice: a take whose pitch can't reach the target (shift capped at 1.8x) is penalised
+            on_pitch = bool(measured) and measured * pitch >= c["target_hz"] * 0.93
+            score = (3 * accuracy + 0.6 * min(swing, 14) / 14 - 0.5 * abs(rate - TARGET_RATE) / TARGET_RATE
+                     - (0 if fits else 2) - (0 if on_pitch else 1))
+            results.append({"take": take, "mp3": mp3, "words": words, "score": score, "accuracy": accuracy, "on_pitch": on_pitch})
             print(f"  {l['id']} take {take}: \"{' '.join(got)}\"  acc {accuracy:.2f}  swing {swing:4.1f}st  "
                   f"{rate:.1f} syl/s  {final_len:.2f}s/{l['slot_s']:.2f}s  {measured or 0:.0f}->{(measured or 0) * pitch:.0f}Hz  score {score:.2f}")
 
         best = max(results, key=lambda r: r["score"])
-        if best["accuracy"] < 0.99:
-            print(f"  WARNING {l['id']}: no take said every word right (best {best['accuracy']:.2f}) - listen to it")
+        if best["accuracy"] < 0.99 or not best["on_pitch"]:
+            print(f"  WARNING {l['id']}: best take is not word-perfect AND on pitch (acc {best['accuracy']:.2f}) - listen to it")
         shutil.copyfile(best["mp3"], l["file"])
         words_json = l["file"].with_suffix(".words.json")
         if best["words"]:
