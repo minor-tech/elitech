@@ -30,11 +30,11 @@ FPS = 30
 
 # ---- Voice per character -------------------------------------------------------
 # target_hz: each take is measured and pitch-shifted so its median pitch lands here.
-# The reference short's cartoon voices sit around 260 Hz (130-400 Hz range).
 # "pitch" is the fallback multiplier if a take's pitch can't be measured.
+# Measured on the reference: main voices ~250-360 Hz, ~4 syllables/s, very wide pitch swings.
 CHARACTERS = {
-    "hero": {"target_hz": 230, "pitch": 1.15, "speed": 1.0},
-    "neighborLeft": {"target_hz": 320, "pitch": 1.30, "speed": 1.05},
+    "hero": {"target_hz": 290, "pitch": 1.3, "speed": 1.12},
+    "neighborLeft": {"target_hz": 350, "pitch": 1.45, "speed": 1.15},
 }
 # ---- Acting per line (from the script's directions) ----------------------------
 # exaggeration: 0.25 flat ... 0.5 default ... 1.0+ over the top
