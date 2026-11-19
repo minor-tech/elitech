@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """EnamelShortV2 voiceovers with Chatterbox (resemble-ai/chatterbox, MIT, free, runs locally).
 
-One-time setup on your Mac (Python 3.11 is the safest version for its pinned deps):
-    python3.11 -m venv ~/chatterbox-env && source ~/chatterbox-env/bin/activate
+One-time setup (Python 3.11 or 3.12):
+    Mac:     python3.11 -m venv ~/chatterbox-env && source ~/chatterbox-env/bin/activate
+    Windows: py -3.12 -m venv %USERPROFILE%\chatterbox-env   (then use chatterbox-env\Scripts\python.exe)
     pip install chatterbox-tts
     pip install faster-whisper        # optional: exact word timings for the captions
 
-Then, from popcorn-short/ (with the venv active):
+Then, from popcorn-short/ (on Windows replace "python3" with the venv's python.exe):
     python3 scripts/make_voices_chatterbox.py --only hero_line1   # test one line first
     python3 scripts/make_voices_chatterbox.py                     # all 7 lines
     python3 scripts/make_voices_chatterbox.py --takes 3           # 3 takes per line to pick from
@@ -69,7 +70,8 @@ def load_lines():
 def ffmpeg_cmd():
     if shutil.which("ffmpeg"):
         return ["ffmpeg"]
-    return ["npx", "remotion", "ffmpeg"]  # the ffmpeg bundled with Remotion
+    npx = shutil.which("npx") or shutil.which("npx.cmd") or "npx"  # npx.cmd on Windows
+    return [npx, "remotion", "ffmpeg"]  # the ffmpeg bundled with Remotion
 
 
 def tts_text(text):

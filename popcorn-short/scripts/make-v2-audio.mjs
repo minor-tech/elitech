@@ -19,7 +19,7 @@ const SR = 44100;
 const ffmpeg = (args) => {
   const sys = spawnSync('ffmpeg', ['-version']);
   if (sys.status === 0) return execFileSync('ffmpeg', args, {stdio: 'pipe'});
-  return execFileSync('npx', ['remotion', 'ffmpeg', ...args], {stdio: 'pipe', cwd: root});
+  return execFileSync('npx', ['remotion', 'ffmpeg', ...args], {stdio: 'pipe', cwd: root, shell: process.platform === 'win32'});
 };
 
 const want = (rel) => {

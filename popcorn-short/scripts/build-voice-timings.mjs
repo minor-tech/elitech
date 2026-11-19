@@ -25,7 +25,7 @@ const decode = (file) => {
   const args = ['-loglevel', 'error', '-i', file, '-ac', '1', '-ar', String(RATE), '-f', 'f32le', '-'];
   const out = spawnSync('ffmpeg', ['-version']).status === 0
     ? execFileSync('ffmpeg', args, {maxBuffer: 1 << 28})
-    : execFileSync('npx', ['remotion', 'ffmpeg', ...args], {maxBuffer: 1 << 28, cwd: root});
+    : execFileSync('npx', ['remotion', 'ffmpeg', ...args], {maxBuffer: 1 << 28, cwd: root, shell: process.platform === 'win32'});
   return new Float32Array(out.buffer, out.byteOffset, out.byteLength / 4);
 };
 
