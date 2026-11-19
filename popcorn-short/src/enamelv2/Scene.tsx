@@ -80,20 +80,20 @@ const CrackOverlay: React.FC<{f: number; heal: number}> = ({f, heal}) => {
   );
 };
 
-const IceCube: React.FC<{x: number; y: number; rot: number}> = ({x, y, rot}) => (
+export const IceCube: React.FC<{x: number; y: number; rot: number}> = ({x, y, rot}) => (
   <g transform={`translate(${x} ${y}) rotate(${rot})`}>
     <rect x={-42} y={-42} width={84} height={84} rx={16} fill="#DDF4FF" stroke="#5BA9D6" strokeWidth={8} />
     <path d="M -26 -24 L -6 -24" stroke="#fff" strokeWidth={9} strokeLinecap="round" />
     <path d="M -26 -24 L -26 -6" stroke="#fff" strokeWidth={9} strokeLinecap="round" />
   </g>
 );
-const Nut: React.FC<{x: number; y: number; rot: number}> = ({x, y, rot}) => (
+export const Nut: React.FC<{x: number; y: number; rot: number}> = ({x, y, rot}) => (
   <g transform={`translate(${x} ${y}) rotate(${rot})`}>
     <path d="M 0 -46 C 34 -40, 44 10, 0 46 C -44 10, -34 -40, 0 -46 Z" fill="#D9A066" stroke={C.ink} strokeWidth={8} strokeLinejoin="round" />
     <path d="M 0 -30 C 10 -10, 10 14, 0 32" stroke="#A86F3C" strokeWidth={5} fill="none" strokeLinecap="round" />
   </g>
 );
-const Burst: React.FC<{f: number; at: number; x: number; y: number; kind: 'ice' | 'nut'}> = ({f, at, x, y, kind}) => {
+export const Burst: React.FC<{f: number; at: number; x: number; y: number; kind: 'ice' | 'nut'}> = ({f, at, x, y, kind}) => {
   const t = f - at;
   if (t < 0 || t > 32) return null;
   const n = kind === 'ice' ? 8 : 7;
@@ -135,7 +135,7 @@ const Flex: React.FC<{x: number; y: number; s: number}> = ({x, y, s}) => {
     </g>
   );
 };
-const Cross: React.FC<{x: number; y: number; s: number}> = ({x, y, s}) =>
+export const Cross: React.FC<{x: number; y: number; s: number}> = ({x, y, s}) =>
   s <= 0 ? null : (
     <g transform={`translate(${x} ${y}) scale(${s}) rotate(8)`} strokeLinecap="round">
       <path d="M -34 -34 L 34 34 M 34 -34 L -34 34" stroke={C.ink} strokeWidth={30} />

@@ -29,9 +29,12 @@ REFS = ROOT / "public/assets/audio/voice_refs"  # optional: hero.wav / neighborL
 FPS = 30
 
 # ---- Voice per character -------------------------------------------------------
+# target_hz: each take is measured and pitch-shifted so its median pitch lands here.
+# The reference short's cartoon voices sit around 260 Hz (130-400 Hz range).
+# "pitch" is the fallback multiplier if a take's pitch can't be measured.
 CHARACTERS = {
-    "hero": {"pitch": 1.15, "speed": 1.0},
-    "neighborLeft": {"pitch": 1.30, "speed": 1.05},
+    "hero": {"target_hz": 230, "pitch": 1.15, "speed": 1.0},
+    "neighborLeft": {"target_hz": 320, "pitch": 1.30, "speed": 1.05},
 }
 # ---- Acting per line (from the script's directions) ----------------------------
 # exaggeration: 0.25 flat ... 0.5 default ... 1.0+ over the top
@@ -79,6 +82,15 @@ def tts_text(text):
     return re.sub(r"\b[A-Z]{2,}\b", lambda m: m[0].lower(), text)
 
 
+def median_pitch(y, sr):
+    """Median f0 (Hz) of the voiced part of a take, or None."""
+    import numpy as np
+    import librosa
+    f0, voiced, _ = librosa.pyin(y, fmin=70, fmax=600, sr=sr, frame_length=2048)
+    f0 = f0[voiced & ~np.isnan(f0)] if voiced is not None else f0[~np.isnan(f0)]
+    return float(np.median(f0)) if len(f0) > 10 else None
+
+
 def atempo_chain(x):
     # atempo accepts 0.5..2.0 per stage; chain stages for anything outside that
     stages = []
@@ -122,7 +134,7 @@ def main():
     lines = [l for l in load_lines() if not args.only or l["id"] in args.only]
     for l in lines:
         c, a = CHARACTERS[l["character"]], ACTING[l["id"]]
-        print(f"{l['id']:15} pitch x{c['pitch']:.2f}  exag {a['exaggeration']:.2f}  cfg {a['cfg_weight']:.2f}  slot {l['slot_s']:.2f}s  \"{l['text']}\"")
+        print(f"{l['id']:15} ->{c['target_hz']}Hz  exag {a['exaggeration']:.2f}  cfg {a['cfg_weight']:.2f}  slot {l['slot_s']:.2f}s  \"{l['text']}\"")
     if args.dry_run:
         return
 
@@ -161,6 +173,9 @@ def main():
             raw = tmp / f"{l['id']}_{take}.wav"
             ta.save(str(raw), torch.from_numpy(y).unsqueeze(0), model.sr)
 
+            measured = median_pitch(y, model.sr)
+            pitch = min(1.8, max(0.85, c["target_hz"] / measured)) if measured else c["pitch"]
+
             length = len(y) / model.sr / c["speed"]
             speed = c["speed"]
             note = ""
@@ -176,9 +191,10 @@ def main():
             else:
                 (OUT / "takes").mkdir(exist_ok=True)
                 dest = OUT / "takes" / f"{l['id']}_take{take}.mp3"
-            post(raw, dest, model.sr, c["pitch"], speed)
+            post(raw, dest, model.sr, pitch, speed)
             words = word_timings(dest, dest.with_suffix(".words.json"), whisper) if take == 1 else ""
-            print(f"made  {dest.relative_to(ROOT)}  {length * c['speed'] / speed:.2f}s{note}  {words}")
+            hz = f"{measured:.0f}->{measured * pitch:.0f} Hz" if measured else f"pitch x{pitch:.2f}"
+            print(f"made  {dest.relative_to(ROOT)}  {length * c['speed'] / speed:.2f}s  {hz}{note}  {words}")
 
     print("\nNext: npm run timings && npm run render:enamel-v2")
     if args.takes > 1:

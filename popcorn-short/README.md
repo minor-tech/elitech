@@ -95,3 +95,12 @@ The committed files are **stand-ins** (espeak robot voices, synthesised SFX/BGM)
 4. `npm run render:enamel-v2` -> `out/enamel-short-v2.mp4`
 
 `npm run audio:v2` recreates missing stand-ins and never overwrites existing files (`-- --force` to regenerate them).
+
+## Video #2 v3: remade in the reference's style (`EnamelShortV3`)
+
+Same script and audio slots as v2, restyled after the reference short: cut-away anatomy (the hero is a molar cross-section with enamel, dentin and a pulp that glows red when the crack reaches it), googly eyes perched on top + noodle arms, a dark maroon background, one-word captions in Luckiest Guy (Apache 2.0) over the body, "Enamel / Dentin / Pulp" labels, hard cuts to close-ups, and a mix loudness-matched to the reference (~-14.5 LUFS).
+
+```bash
+npm run render:enamel-v3   # timings -> render -> loudness -> out/enamel-short-v3.mp4
+```
+Code: `src/enamelv3/`. Chatterbox voices: `scripts/make_voices_chatterbox.py` now pitch-matches every take to the reference range (hero ~230 Hz, neighbour ~320 Hz).

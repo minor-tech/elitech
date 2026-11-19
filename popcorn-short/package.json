@@ -13,7 +13,8 @@
     "voices": "python3 scripts/make_voices.py",
     "timings": "node scripts/build-voice-timings.mjs",
     "render:enamel-v2": "node scripts/build-voice-timings.mjs && remotion render EnamelShortV2 out/enamel-short-v2.mp4",
-    "voices:chatterbox": "python3 scripts/make_voices_chatterbox.py"
+    "voices:chatterbox": "python3 scripts/make_voices_chatterbox.py",
+    "render:enamel-v3": "node scripts/build-voice-timings.mjs && remotion render EnamelShortV3 out/enamel-short-v3-raw.mp4 && node scripts/finalize-audio.mjs out/enamel-short-v3-raw.mp4 out/enamel-short-v3.mp4"
   },
   "dependencies": {
     "@remotion/bundler": "^4.0.545",
