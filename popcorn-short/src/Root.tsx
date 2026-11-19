@@ -3,6 +3,7 @@ import {PopcornShort} from './PopcornShort';
 import {EnamelShort} from './enamel/EnamelShort';
 import {EnamelShortV2} from './enamelv2/EnamelShortV2';
 import {EnamelShortV3} from './enamelv3/EnamelShortV3';
+import {GAP_FRAMES, GapShort} from './gap/GapShort';
 import {FPS, HEIGHT, TOTAL_FRAMES, WIDTH} from './theme';
 
 export const RemotionRoot: React.FC = () => (
@@ -15,5 +16,7 @@ export const RemotionRoot: React.FC = () => (
     <Composition id="EnamelShortV2" component={EnamelShortV2} durationInFrames={TOTAL_FRAMES} fps={FPS} width={WIDTH} height={HEIGHT} />
     {/* Video #2 v3: remade in the style of the reference (cut-away anatomy, one-word captions) */}
     <Composition id="EnamelShortV3" component={EnamelShortV3} durationInFrames={TOTAL_FRAMES} fps={FPS} width={WIDTH} height={HEIGHT} />
+    {/* Video #3: "The Gap" - extraction, the neighbours move in (45 s) */}
+    <Composition id="GapShort" component={GapShort} durationInFrames={GAP_FRAMES} fps={FPS} width={WIDTH} height={HEIGHT} />
   </>
 );

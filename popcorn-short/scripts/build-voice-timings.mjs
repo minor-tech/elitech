@@ -11,7 +11,10 @@ import {fileURLToPath} from 'node:url';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const FPS = 30;
 const RATE = 16000;
-const src = readFileSync(join(root, 'src/audio/dialogueData.ts'), 'utf8');
+// usage: node scripts/build-voice-timings.mjs [dialogue.ts] [out.json]   (defaults: the Enamel short)
+const dialogueFile = process.argv[2] ?? 'src/audio/dialogueData.ts';
+const outFile = process.argv[3] ?? 'src/audio/voiceTimings.json';
+const src = readFileSync(join(root, dialogueFile), 'utf8');
 const lines = [...src.matchAll(/\{id: '(\w+)'.*?text: (?:"([^"]*)"|'([^']*)'), fromFrame: (\d+), toFrame: (\d+), voiceFile: '([^']+)'(?:, delay: (\d+))?/g)].map((m) => ({
   id: m[1],
   text: m[2] ?? m[3],
@@ -97,5 +100,5 @@ for (const l of lines) {
   result[l.id] = {durationFrames: nFrames, voicedFrom: first, voicedTo: last, source, words, mouth};
   console.log(`${l.id.padEnd(15)} ${(nFrames / FPS).toFixed(2)}s  words: ${source}`);
 }
-writeFileSync(join(root, 'src/audio/voiceTimings.json'), JSON.stringify(result));
+writeFileSync(join(root, outFile), JSON.stringify(result));
 console.log(problems ? `\n${problems} issue(s) above` : '\nall voice lines fit their windows');

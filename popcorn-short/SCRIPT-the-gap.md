@@ -1,4 +1,4 @@
-# "THE GAP": script v1 (for approval)
+# "THE GAP": script (approved: 45 s, Stomach scene cut, Chatterbox voices)
 
 **Format:** about 60 s, 1080×1920, same style as Enamel v3: cut-away anatomy, googly-eyed organs, one-word captions, organ labels, hard cuts every 4–8 s.
 **Core fact:** teeth don't grow back or grow longer. After an extraction, the neighbours **tip and drift** into the gap, the tooth in the opposite jaw **over-erupts** (slides out of its socket toward the gap), and the jaw bone under the gap **shrinks**.
@@ -30,7 +30,7 @@
 
 **SCENE 2 · 0:04–0:10 · The dentist chair**
 *Visual:* wide shot of the mouth cut-away (Lefty, Mo, Righty, with Upper above), plus a corner inset of Heart pounding and Lungs puffed up.
-- **HEART:** Dentist chair. One-forty BPM. We're all gonna—
+- **HEART:** Dentist chair?! I'm beating SO fast!
 - **BRAIN:** Lungs. BREATHE.
 - **LUNGS:** *(exhale)* …sorry.
 - **MO:** It's ONE tooth? I chewed for you for twenty years!

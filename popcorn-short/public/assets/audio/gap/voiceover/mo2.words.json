@@ -1,0 +1,47 @@
+[
+ {
+  "text": "One",
+  "startMs": 0.0,
+  "endMs": 180.0
+ },
+ {
+  "text": "tooth",
+  "startMs": 180.0,
+  "endMs": 500.0
+ },
+ {
+  "text": "I",
+  "startMs": 500.0,
+  "endMs": 880.0
+ },
+ {
+  "text": "chewed",
+  "startMs": 880.0,
+  "endMs": 1180.0
+ },
+ {
+  "text": "for",
+  "startMs": 1180.0,
+  "endMs": 1300.0
+ },
+ {
+  "text": "you",
+  "startMs": 1300.0,
+  "endMs": 1480.0
+ },
+ {
+  "text": "for",
+  "startMs": 1480.0,
+  "endMs": 1660.0
+ },
+ {
+  "text": "20",
+  "startMs": 1660.0,
+  "endMs": 1980.0
+ },
+ {
+  "text": "years.",
+  "startMs": 1980.0,
+  "endMs": 2320.0
+ }
+]

@@ -1,0 +1,27 @@
+[
+ {
+  "text": "Dentist",
+  "startMs": 0.0,
+  "endMs": 220.0
+ },
+ {
+  "text": "Chair,",
+  "startMs": 220.0,
+  "endMs": 420.0
+ },
+ {
+  "text": "1",
+  "startMs": 680.0,
+  "endMs": 800.0
+ },
+ {
+  "text": ".40",
+  "startMs": 800.0,
+  "endMs": 1060.0
+ },
+ {
+  "text": "BPM",
+  "startMs": 1060.0,
+  "endMs": 1460.0
+ }
+]

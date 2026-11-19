@@ -21,7 +21,7 @@ What it does per line:
   4. writes public/assets/audio/voiceover/<id>.mp3 (+ <id>.words.json if faster-whisper is installed)
 Every take carries Resemble's inaudible Perth watermark (doesn't affect TikTok).
 """
-import argparse, json, pathlib, re, shutil, subprocess, sys, tempfile
+import argparse, json, math, pathlib, re, shutil, subprocess, sys, tempfile
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "public/assets/audio/voiceover"
@@ -32,11 +32,23 @@ FPS = 30
 # target_hz: each take is measured and pitch-shifted so its median pitch lands here.
 # "pitch" is the fallback multiplier if a take's pitch can't be measured.
 # Measured on the reference: main voices ~250-360 Hz, ~4 syllables/s, very wide pitch swings.
+# rate = target syllables/second of speech; exag/cfg = default acting for the character
 CHARACTERS = {
-    "hero": {"target_hz": 290, "pitch": 1.3},
-    "neighborLeft": {"target_hz": 350, "pitch": 1.45},
+    # Enamel short
+    "hero": {"target_hz": 290, "pitch": 1.3, "rate": 4.2, "exag": 1.0, "cfg": 0.4},
+    "neighborLeft": {"target_hz": 350, "pitch": 1.45, "rate": 4.2, "exag": 1.1, "cfg": 0.35},
+    # The Gap
+    "brain": {"target_hz": 210, "pitch": 1.1, "rate": 4.3, "exag": 0.9, "cfg": 0.4},  # stressed manager
+    "mo": {"target_hz": 290, "pitch": 1.3, "rate": 4.0, "exag": 1.25, "cfg": 0.35},  # theatrical patient
+    "heart": {"target_hz": 380, "pitch": 1.6, "rate": 5.0, "exag": 1.3, "cfg": 0.3},  # panicky, fast
+    "lungs": {"target_hz": 410, "pitch": 1.7, "rate": 3.8, "exag": 0.9, "cfg": 0.4},  # squeaky, deflated
+    "gums": {"target_hz": 330, "pitch": 1.45, "rate": 4.4, "exag": 1.1, "cfg": 0.4},  # upbeat builders
+    "tongue": {"target_hz": 360, "pitch": 1.55, "rate": 4.8, "exag": 1.2, "cfg": 0.35},  # giggly, fast
+    "lefty": {"target_hz": 340, "pitch": 1.5, "rate": 4.2, "exag": 1.0, "cfg": 0.4},  # sly
+    "righty": {"target_hz": 235, "pitch": 1.15, "rate": 4.4, "exag": 1.3, "cfg": 0.35},  # brash
+    "upper": {"target_hz": 165, "pitch": 0.85, "rate": 3.5, "exag": 0.9, "cfg": 0.45},  # slow, deep
+    "bone": {"target_hz": 150, "pitch": 0.8, "rate": 3.6, "exag": 0.6, "cfg": 0.45},  # tired, low
 }
-TARGET_RATE = 4.2  # syllables per second of speech (reference ~4.1)
 # ---- Acting per line (from the script's directions) ----------------------------
 # exaggeration: 0.25 flat ... 0.5 default ... 1.0+ over the top
 # cfg_weight:   lower (~0.3) = looser, more dramatic pacing; 0.5 = default
@@ -50,13 +62,14 @@ ACTING = {
     "neighbor_line3": {"exaggeration": 0.8, "cfg_weight": 0.4},  # deadpan beat
 }
 TEMPERATURE = 0.85
+PITCH_RANGE = (0.7, 1.8)  # never shift further than this (artefacts)
 MAX_SPEEDUP = 1.3
 MIN_SPEED = 0.8
 MARGIN_S = 0.15  # breathing room before the next line's window
 
 
-def load_lines():
-    src = (ROOT / "src/audio/dialogueData.ts").read_text()
+def load_lines(dialogue="src/audio/dialogueData.ts"):
+    src = (ROOT / dialogue).read_text()
     pat = re.compile(
         r"\{id: '(\w+)', character: '(\w+)', text: (?:\"([^\"]*)\"|'([^']*)'), fromFrame: (\d+), toFrame: (\d+), voiceFile: '([^']+)'(?:, delay: (\d+))?"
     )
@@ -68,7 +81,7 @@ def load_lines():
             "file": ROOT / "public" / m[7],
         })
     if not lines:
-        sys.exit("Could not read any lines from src/audio/dialogueData.ts")
+        sys.exit(f"Could not read any lines from {dialogue}")
     return lines
 
 
@@ -146,6 +159,7 @@ def transcribe(path, whisper):
 
 def main():
     ap = argparse.ArgumentParser()
+    ap.add_argument("--dialogue", default="src/audio/dialogueData.ts", help="dialogue file to voice")
     ap.add_argument("--only", nargs="*", help="line ids to (re)generate, e.g. hero_line1")
     ap.add_argument("--takes", type=int, default=3, help="takes per line; the best is picked automatically, all are kept in voiceover/takes/")
     ap.add_argument("--max-takes", type=int, default=9, help="keep trying up to this many takes if a line is mispronounced")
@@ -154,9 +168,10 @@ def main():
     ap.add_argument("--dry-run", action="store_true", help="print the plan without loading the model")
     args = ap.parse_args()
 
-    lines = [l for l in load_lines() if not args.only or l["id"] in args.only]
+    lines = [l for l in load_lines(args.dialogue) if not args.only or l["id"] in args.only]
     for l in lines:
-        c, a = CHARACTERS[l["character"]], ACTING[l["id"]]
+        c = CHARACTERS[l["character"]]
+        a = ACTING.get(l["id"], {"exaggeration": c["exag"], "cfg_weight": c["cfg"]})
         print(f"{l['id']:15} ->{c['target_hz']}Hz  exag {a['exaggeration']:.2f}  cfg {a['cfg_weight']:.2f}  slot {l['slot_s']:.2f}s  \"{l['text']}\"")
     if args.dry_run:
         return
@@ -182,7 +197,8 @@ def main():
     tmp = pathlib.Path(tempfile.mkdtemp())
     from difflib import SequenceMatcher
     for l in lines:
-        c, a = CHARACTERS[l["character"]], ACTING[l["id"]]
+        c = CHARACTERS[l["character"]]
+        a = ACTING.get(l["id"], {"exaggeration": c["exag"], "cfg_weight": c["cfg"]})
         ref = REFS / f"{l['character']}.wav"
         want = norm_words(l["text"])
         n_syl = syllables(l["text"])
@@ -206,9 +222,9 @@ def main():
             ta.save(str(raw), torch.from_numpy(y).unsqueeze(0), model.sr)
 
             measured = median_pitch(y, model.sr)
-            pitch = min(1.8, max(0.85, c["target_hz"] / measured)) if measured else c["pitch"]
+            pitch = min(PITCH_RANGE[1], max(PITCH_RANGE[0], c["target_hz"] / measured)) if measured else c["pitch"]
             natural = len(y) / model.sr
-            speed = min(MAX_SPEEDUP, max(MIN_SPEED, (n_syl / natural) and TARGET_RATE / (n_syl / natural)))
+            speed = min(MAX_SPEEDUP, max(MIN_SPEED, (n_syl / natural) and c["rate"] / (n_syl / natural)))
             if natural / speed > l["slot_s"]:
                 speed = min(MAX_SPEEDUP, natural / l["slot_s"])
             final_len = natural / speed
@@ -222,8 +238,8 @@ def main():
             rate = n_syl / final_len
             fits = final_len <= l["slot_s"]
             # same character = same voice: a take whose pitch can't reach the target (shift capped at 1.8x) is penalised
-            on_pitch = bool(measured) and measured * pitch >= c["target_hz"] * 0.93
-            score = (3 * accuracy + 0.6 * min(swing, 14) / 14 - 0.5 * abs(rate - TARGET_RATE) / TARGET_RATE
+            on_pitch = bool(measured) and abs(math.log(measured * pitch / c["target_hz"])) < math.log(1.08)
+            score = (3 * accuracy + 0.6 * min(swing, 14) / 14 - 0.5 * abs(rate - c["rate"]) / c["rate"]
                      - (0 if fits else 2) - (0 if on_pitch else 1))
             results.append({"take": take, "mp3": mp3, "words": words, "score": score, "accuracy": accuracy, "on_pitch": on_pitch})
             print(f"  {l['id']} take {take}: \"{' '.join(got)}\"  acc {accuracy:.2f}  swing {swing:4.1f}st  "

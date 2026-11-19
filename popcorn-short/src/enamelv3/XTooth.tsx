@@ -200,7 +200,7 @@ export const XTooth: React.FC<XToothProps> = ({
   return (
     <g transform={`translate(${left} ${top}) scale(${scale})`}>
       <g transform={inner}>
-        {!faceless && <Arms kind={arms} frame={frame} />}
+        {!faceless && !flip && <Arms kind={arms} frame={frame} />}
         {/* cross-section layers */}
         <path d={OUTER} fill={X.dentinDark} stroke={X.line} strokeWidth={5} strokeLinejoin="round" />
         <path d={ENAMEL} fill={X.enamel} stroke={X.line} strokeWidth={5} strokeLinejoin="round" />
@@ -229,8 +229,9 @@ export const XTooth: React.FC<XToothProps> = ({
               </g>
             );
           })}
-        {!faceless && !flip && (
-          <g>
+        {!faceless && (
+          // an upper (flipped) tooth keeps an upright face, near its crown tips
+          <g transform={flip ? 'rotate(180 200 96)' : undefined}>
             <Brows kind={brows} />
             <Eye cx={EYE_L} kind={eyes} look={look} side={-1} />
             <Eye cx={EYE_R} kind={eyes} look={look} side={1} />
