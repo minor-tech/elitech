@@ -1,0 +1,17 @@
+[
+ {
+  "text": "Free",
+  "startMs": 0.0,
+  "endMs": 200.0
+ },
+ {
+  "text": "real",
+  "startMs": 200.0,
+  "endMs": 480.0
+ },
+ {
+  "text": "estate.",
+  "startMs": 480.0,
+  "endMs": 700.0
+ }
+]

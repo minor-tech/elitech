@@ -1,0 +1,37 @@
+[
+ {
+  "text": "Red",
+  "startMs": 0.0,
+  "endMs": 200.0
+ },
+ {
+  "text": "alert,",
+  "startMs": 200.0,
+  "endMs": 560.0
+ },
+ {
+  "text": "lower",
+  "startMs": 900.0,
+  "endMs": 1140.0
+ },
+ {
+  "text": "left",
+  "startMs": 1140.0,
+  "endMs": 1420.0
+ },
+ {
+  "text": "molar",
+  "startMs": 1420.0,
+  "endMs": 1740.0
+ },
+ {
+  "text": "is",
+  "startMs": 1740.0,
+  "endMs": 1940.0
+ },
+ {
+  "text": "screaming.",
+  "startMs": 1940.0,
+  "endMs": 2400.0
+ }
+]

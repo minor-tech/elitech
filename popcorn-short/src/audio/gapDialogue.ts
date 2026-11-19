@@ -13,25 +13,25 @@ export type GapLine = {
   delay?: number;
 };
 
-export const GAP_TOTAL_FRAMES = 2242;
+export const GAP_TOTAL_FRAMES = 1189;
 
 export const gapDialogue: GapLine[] = [
-  {id: 'brain1', character: 'brain', text: "Red alert! Lower left molar is screaming!", fromFrame: 0, toFrame: 122, voiceFile: 'assets/audio/gap/voiceover/brain1.mp3'},
-  {id: 'mo1', character: 'mo', text: "I'm fine! ...I'm so NOT fine!", fromFrame: 126, toFrame: 248, voiceFile: 'assets/audio/gap/voiceover/mo1.mp3'},
-  {id: 'mo2', character: 'mo', text: "WHAT?! ONE tooth?! I chewed for YEARS!", fromFrame: 254, toFrame: 376, voiceFile: 'assets/audio/gap/voiceover/mo2.mp3'},
-  {id: 'mo3', character: 'mo', text: "Tell the bone... I loved it!", fromFrame: 408, toFrame: 530, voiceFile: 'assets/audio/gap/voiceover/mo3.mp3'},
-  {id: 'gums1', character: 'gums', text: "Patching the hole! Give us a few weeks!", fromFrame: 538, toFrame: 660, voiceFile: 'assets/audio/gap/voiceover/gums1.mp3'},
-  {id: 'tongue1', character: 'tongue', text: "Ooh, a hole! I'm touching it!", fromFrame: 672, toFrame: 794, voiceFile: 'assets/audio/gap/voiceover/tongue1.mp3'},
-  {id: 'brain3', character: 'brain', text: "Tongue! Stop poking!", fromFrame: 798, toFrame: 920, voiceFile: 'assets/audio/gap/voiceover/brain3.mp3'},
-  {id: 'tongue2', character: 'tongue', text: "Can't. Won't.", fromFrame: 924, toFrame: 1046, voiceFile: 'assets/audio/gap/voiceover/tongue2.mp3'},
-  {id: 'brain4', character: 'brain', text: "Who moves in first? Comment your guess!", fromFrame: 1056, toFrame: 1178, voiceFile: 'assets/audio/gap/voiceover/brain4.mp3'},
-  {id: 'righty1', character: 'righty', text: "Free real estate!", fromFrame: 1226, toFrame: 1348, voiceFile: 'assets/audio/gap/voiceover/righty1.mp3'},
-  {id: 'lefty1', character: 'lefty', text: "I'm not moving. I'm just leaning.", fromFrame: 1356, toFrame: 1478, voiceFile: 'assets/audio/gap/voiceover/lefty1.mp3'},
-  {id: 'upper1', character: 'upper', text: "Nobody bites me back... so I'm coming DOWN!", fromFrame: 1488, toFrame: 1610, voiceFile: 'assets/audio/gap/voiceover/upper1.mp3'},
-  {id: 'brain5', character: 'brain', text: "Trick question. All of them!", fromFrame: 1620, toFrame: 1742, voiceFile: 'assets/audio/gap/voiceover/brain5.mp3'},
-  {id: 'bone1', character: 'bone', text: "No workout? I shrink up to half!", fromFrame: 1752, toFrame: 1874, voiceFile: 'assets/audio/gap/voiceover/bone1.mp3'},
-  {id: 'brain6', character: 'brain', text: "Lost a tooth? Ask your dentist early!", fromFrame: 1882, toFrame: 2004, voiceFile: 'assets/audio/gap/voiceover/brain6.mp3'},
-  {id: 'upper2', character: 'upper', text: "Or I keep coming down!", fromFrame: 2010, toFrame: 2132, voiceFile: 'assets/audio/gap/voiceover/upper2.mp3'},
+  {id: 'brain1', character: 'brain', text: "Red alert! Lower left molar is screaming!", fromFrame: 0, toFrame: 87, voiceFile: 'assets/audio/gap/voiceover/brain1.mp3'},
+  {id: 'mo1', character: 'mo', text: "I'm fine! ...I'm so NOT fine!", fromFrame: 91, toFrame: 154, voiceFile: 'assets/audio/gap/voiceover/mo1.mp3'},
+  {id: 'mo2', character: 'mo', text: "WHAT?! ONE tooth?! I chewed for YEARS!", fromFrame: 160, toFrame: 241, voiceFile: 'assets/audio/gap/voiceover/mo2.mp3'},
+  {id: 'mo3', character: 'mo', text: "Tell the bone... I loved it!", fromFrame: 273, toFrame: 327, voiceFile: 'assets/audio/gap/voiceover/mo3.mp3'},
+  {id: 'gums1', character: 'gums', text: "Patching the hole! Give us a few weeks!", fromFrame: 335, toFrame: 383, voiceFile: 'assets/audio/gap/voiceover/gums1.mp3'},
+  {id: 'tongue1', character: 'tongue', text: "Ooh, a hole! I'm touching it!", fromFrame: 395, toFrame: 452, voiceFile: 'assets/audio/gap/voiceover/tongue1.mp3'},
+  {id: 'brain3', character: 'brain', text: "Tongue! Stop poking!", fromFrame: 456, toFrame: 502, voiceFile: 'assets/audio/gap/voiceover/brain3.mp3'},
+  {id: 'tongue2', character: 'tongue', text: "Can't. Won't.", fromFrame: 506, toFrame: 544, voiceFile: 'assets/audio/gap/voiceover/tongue2.mp3'},
+  {id: 'brain4', character: 'brain', text: "Who moves in first? Comment your guess!", fromFrame: 554, toFrame: 621, voiceFile: 'assets/audio/gap/voiceover/brain4.mp3'},
+  {id: 'righty1', character: 'righty', text: "Free real estate!", fromFrame: 669, toFrame: 702, voiceFile: 'assets/audio/gap/voiceover/righty1.mp3'},
+  {id: 'lefty1', character: 'lefty', text: "I'm not moving. I'm just leaning.", fromFrame: 710, toFrame: 770, voiceFile: 'assets/audio/gap/voiceover/lefty1.mp3'},
+  {id: 'upper1', character: 'upper', text: "Nobody bites me back... so I'm coming DOWN!", fromFrame: 780, toFrame: 831, voiceFile: 'assets/audio/gap/voiceover/upper1.mp3'},
+  {id: 'brain5', character: 'brain', text: "Trick question. All of them!", fromFrame: 841, toFrame: 885, voiceFile: 'assets/audio/gap/voiceover/brain5.mp3'},
+  {id: 'bone1', character: 'bone', text: "No workout? I shrink up to half!", fromFrame: 895, toFrame: 954, voiceFile: 'assets/audio/gap/voiceover/bone1.mp3'},
+  {id: 'brain6', character: 'brain', text: "Lost a tooth? Ask your dentist early!", fromFrame: 962, toFrame: 1030, voiceFile: 'assets/audio/gap/voiceover/brain6.mp3'},
+  {id: 'upper2', character: 'upper', text: "Or I keep coming down!", fromFrame: 1036, toFrame: 1079, voiceFile: 'assets/audio/gap/voiceover/upper2.mp3'},
 ];
 
 /** Frame helpers for the scene: start / end of a line. */

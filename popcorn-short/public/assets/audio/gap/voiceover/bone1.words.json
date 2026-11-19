@@ -1,0 +1,37 @@
+[
+ {
+  "text": "No",
+  "startMs": 0.0,
+  "endMs": 200.0
+ },
+ {
+  "text": "workout,",
+  "startMs": 200.0,
+  "endMs": 500.0
+ },
+ {
+  "text": "I",
+  "startMs": 880.0,
+  "endMs": 940.0
+ },
+ {
+  "text": "shrink",
+  "startMs": 940.0,
+  "endMs": 1160.0
+ },
+ {
+  "text": "up",
+  "startMs": 1160.0,
+  "endMs": 1380.0
+ },
+ {
+  "text": "to",
+  "startMs": 1380.0,
+  "endMs": 1500.0
+ },
+ {
+  "text": "half.",
+  "startMs": 1500.0,
+  "endMs": 1700.0
+ }
+]

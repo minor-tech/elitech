@@ -1,0 +1,37 @@
+[
+ {
+  "text": "Lost",
+  "startMs": 0.0,
+  "endMs": 140.0
+ },
+ {
+  "text": "a",
+  "startMs": 140.0,
+  "endMs": 320.0
+ },
+ {
+  "text": "tooth?",
+  "startMs": 320.0,
+  "endMs": 500.0
+ },
+ {
+  "text": "Ask",
+  "startMs": 920.0,
+  "endMs": 1060.0
+ },
+ {
+  "text": "your",
+  "startMs": 1060.0,
+  "endMs": 1200.0
+ },
+ {
+  "text": "dentist",
+  "startMs": 1200.0,
+  "endMs": 1420.0
+ },
+ {
+  "text": "early.",
+  "startMs": 1420.0,
+  "endMs": 1840.0
+ }
+]

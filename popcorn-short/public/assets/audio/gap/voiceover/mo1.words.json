@@ -1,0 +1,32 @@
+[
+ {
+  "text": "I'm",
+  "startMs": 0.0,
+  "endMs": 220.0
+ },
+ {
+  "text": "fine,",
+  "startMs": 220.0,
+  "endMs": 540.0
+ },
+ {
+  "text": "I'm",
+  "startMs": 880.0,
+  "endMs": 1040.0
+ },
+ {
+  "text": "so",
+  "startMs": 1040.0,
+  "endMs": 1180.0
+ },
+ {
+  "text": "not",
+  "startMs": 1180.0,
+  "endMs": 1380.0
+ },
+ {
+  "text": "fine.",
+  "startMs": 1380.0,
+  "endMs": 1660.0
+ }
+]

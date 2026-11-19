@@ -1,0 +1,32 @@
+[
+ {
+  "text": "I'm",
+  "startMs": 0.0,
+  "endMs": 200.0
+ },
+ {
+  "text": "not",
+  "startMs": 200.0,
+  "endMs": 300.0
+ },
+ {
+  "text": "moving,",
+  "startMs": 300.0,
+  "endMs": 600.0
+ },
+ {
+  "text": "I'm",
+  "startMs": 920.0,
+  "endMs": 1180.0
+ },
+ {
+  "text": "just",
+  "startMs": 1180.0,
+  "endMs": 1320.0
+ },
+ {
+  "text": "leaning.",
+  "startMs": 1320.0,
+  "endMs": 1580.0
+ }
+]

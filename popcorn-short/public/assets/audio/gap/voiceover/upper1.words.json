@@ -1,0 +1,42 @@
+[
+ {
+  "text": "Nobody",
+  "startMs": 0.0,
+  "endMs": 160.0
+ },
+ {
+  "text": "bites",
+  "startMs": 160.0,
+  "endMs": 360.0
+ },
+ {
+  "text": "me",
+  "startMs": 360.0,
+  "endMs": 540.0
+ },
+ {
+  "text": "back,",
+  "startMs": 540.0,
+  "endMs": 720.0
+ },
+ {
+  "text": "so",
+  "startMs": 860.0,
+  "endMs": 940.0
+ },
+ {
+  "text": "I'm",
+  "startMs": 940.0,
+  "endMs": 1060.0
+ },
+ {
+  "text": "coming",
+  "startMs": 1060.0,
+  "endMs": 1220.0
+ },
+ {
+  "text": "down.",
+  "startMs": 1220.0,
+  "endMs": 1440.0
+ }
+]

@@ -1,0 +1,37 @@
+[
+ {
+  "text": "What?",
+  "startMs": 0.0,
+  "endMs": 300.0
+ },
+ {
+  "text": "One",
+  "startMs": 600.0,
+  "endMs": 740.0
+ },
+ {
+  "text": "tooth?",
+  "startMs": 740.0,
+  "endMs": 1060.0
+ },
+ {
+  "text": "I",
+  "startMs": 1520.0,
+  "endMs": 1560.0
+ },
+ {
+  "text": "chewed",
+  "startMs": 1560.0,
+  "endMs": 1800.0
+ },
+ {
+  "text": "for",
+  "startMs": 1800.0,
+  "endMs": 1940.0
+ },
+ {
+  "text": "years.",
+  "startMs": 1940.0,
+  "endMs": 2240.0
+ }
+]

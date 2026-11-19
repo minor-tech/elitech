@@ -1,0 +1,27 @@
+[
+ {
+  "text": "Trick",
+  "startMs": 0.0,
+  "endMs": 120.0
+ },
+ {
+  "text": "question,",
+  "startMs": 120.0,
+  "endMs": 440.0
+ },
+ {
+  "text": "all",
+  "startMs": 740.0,
+  "endMs": 900.0
+ },
+ {
+  "text": "of",
+  "startMs": 900.0,
+  "endMs": 1040.0
+ },
+ {
+  "text": "them.",
+  "startMs": 1040.0,
+  "endMs": 1180.0
+ }
+]
