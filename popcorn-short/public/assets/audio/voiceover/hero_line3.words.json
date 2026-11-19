@@ -1,0 +1,27 @@
+[
+ {
+  "text": "Wait,",
+  "startMs": 0.0,
+  "endMs": 200.0
+ },
+ {
+  "text": "something's",
+  "startMs": 380.0,
+  "endMs": 660.0
+ },
+ {
+  "text": "wrong,",
+  "startMs": 660.0,
+  "endMs": 840.0
+ },
+ {
+  "text": "I",
+  "startMs": 1180.0,
+  "endMs": 1280.0
+ },
+ {
+  "text": "cracked!",
+  "startMs": 1280.0,
+  "endMs": 1600.0
+ }
+]

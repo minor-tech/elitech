@@ -1,0 +1,42 @@
+[
+ {
+  "text": "I'm",
+  "startMs": 0.0,
+  "endMs": 340.0
+ },
+ {
+  "text": "the",
+  "startMs": 340.0,
+  "endMs": 440.0
+ },
+ {
+  "text": "hardest",
+  "startMs": 440.0,
+  "endMs": 700.0
+ },
+ {
+  "text": "thing",
+  "startMs": 700.0,
+  "endMs": 1000.0
+ },
+ {
+  "text": "in",
+  "startMs": 1000.0,
+  "endMs": 1240.0
+ },
+ {
+  "text": "your",
+  "startMs": 1240.0,
+  "endMs": 1360.0
+ },
+ {
+  "text": "whole",
+  "startMs": 1360.0,
+  "endMs": 1600.0
+ },
+ {
+  "text": "body.",
+  "startMs": 1600.0,
+  "endMs": 2060.0
+ }
+]

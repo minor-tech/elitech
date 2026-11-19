@@ -1,0 +1,22 @@
+[
+ {
+  "text": "Can",
+  "startMs": 0.0,
+  "endMs": 80.0
+ },
+ {
+  "text": "you",
+  "startMs": 80.0,
+  "endMs": 220.0
+ },
+ {
+  "text": "fix",
+  "startMs": 220.0,
+  "endMs": 440.0
+ },
+ {
+  "text": "it?",
+  "startMs": 440.0,
+  "endMs": 720.0
+ }
+]

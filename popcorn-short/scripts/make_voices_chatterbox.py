@@ -33,23 +33,25 @@ FPS = 30
 # "pitch" is the fallback multiplier if a take's pitch can't be measured.
 # Measured on the reference: main voices ~250-360 Hz, ~4 syllables/s, very wide pitch swings.
 CHARACTERS = {
-    "hero": {"target_hz": 290, "pitch": 1.3, "speed": 1.12},
-    "neighborLeft": {"target_hz": 350, "pitch": 1.45, "speed": 1.15},
+    "hero": {"target_hz": 290, "pitch": 1.3},
+    "neighborLeft": {"target_hz": 350, "pitch": 1.45},
 }
+TARGET_RATE = 4.2  # syllables per second of speech (reference ~4.1)
 # ---- Acting per line (from the script's directions) ----------------------------
 # exaggeration: 0.25 flat ... 0.5 default ... 1.0+ over the top
 # cfg_weight:   lower (~0.3) = looser, more dramatic pacing; 0.5 = default
 ACTING = {
-    "hero_line1": {"exaggeration": 0.75, "cfg_weight": 0.35},  # deep, confident
-    "neighbor_line1": {"exaggeration": 0.85, "cfg_weight": 0.30},  # skeptical
-    "hero_line2": {"exaggeration": 0.85, "cfg_weight": 0.35},  # proud, showing off
-    "hero_line3": {"exaggeration": 0.95, "cfg_weight": 0.30},  # suddenly pained
-    "neighbor_line2": {"exaggeration": 0.90, "cfg_weight": 0.30},  # alarmed
-    "hero_line4": {"exaggeration": 0.35, "cfg_weight": 0.45},  # defeated, quiet
-    "neighbor_line3": {"exaggeration": 0.55, "cfg_weight": 0.40},  # deadpan beat
+    "hero_line1": {"exaggeration": 1.0, "cfg_weight": 0.4},  # deep, confident
+    "neighbor_line1": {"exaggeration": 1.1, "cfg_weight": 0.35},  # skeptical
+    "hero_line2": {"exaggeration": 1.1, "cfg_weight": 0.4},  # proud, showing off
+    "hero_line3": {"exaggeration": 1.2, "cfg_weight": 0.35},  # suddenly pained
+    "neighbor_line2": {"exaggeration": 1.15, "cfg_weight": 0.35},  # alarmed
+    "hero_line4": {"exaggeration": 0.6, "cfg_weight": 0.45},  # defeated, quiet
+    "neighbor_line3": {"exaggeration": 0.8, "cfg_weight": 0.4},  # deadpan beat
 }
-TEMPERATURE = 0.8
+TEMPERATURE = 0.85
 MAX_SPEEDUP = 1.3
+MIN_SPEED = 0.8
 MARGIN_S = 0.15  # breathing room before the next line's window
 
 
@@ -77,18 +79,44 @@ def ffmpeg_cmd():
     return [npx, "remotion", "ffmpeg"]  # the ffmpeg bundled with Remotion
 
 
-def tts_text(text):
-    # ALL-CAPS words ("AND") are written for the captions; say them as words, not letters
-    return re.sub(r"\b[A-Z]{2,}\b", lambda m: m[0].lower(), text)
+def tts_text(text, variant=0):
+    """Text as fed to Chatterbox. Same words every time; later variants only change punctuation,
+    which helps when a take keeps mangling a word (e.g. a lone "Hardest?" at the start)."""
+    t = re.sub(r"\b[A-Z]{2,}\b", lambda m: m[0].lower(), text)  # "AND" -> "and", not letters
+    if variant % 3 == 1:
+        t = t.replace("...", " ").replace("?", "?!")
+    elif variant % 3 == 2:
+        t = t.replace("...", " ").replace("?", "!")
+    return re.sub(r"\s+", " ", t).strip(" ,")
 
 
 def median_pitch(y, sr):
     """Median f0 (Hz) of the voiced part of a take, or None."""
     import numpy as np
     import librosa
-    f0, voiced, _ = librosa.pyin(y, fmin=70, fmax=600, sr=sr, frame_length=2048)
-    f0 = f0[voiced & ~np.isnan(f0)] if voiced is not None else f0[~np.isnan(f0)]
-    return float(np.median(f0)) if len(f0) > 10 else None
+    f0, voiced, _ = librosa.pyin(y, fmin=70, fmax=600, sr=sr, frame_length=1024)  # short frames: works on 0.5s lines
+    f0 = f0[~np.isnan(f0)]
+    return float(np.median(f0)) if len(f0) > 4 else None
+
+
+def syllables(text):
+    words = re.findall(r"[a-z']+", text.lower())
+    return sum(max(1, len(re.findall(r"[aeiouy]+", w)) - (1 if w.endswith("e") and len(w) > 3 else 0)) for w in words)
+
+
+def norm_words(text):
+    return [w for w in re.sub(r"[^a-z' ]", " ", text.lower()).split() if w]
+
+
+def pitch_swing(y, sr):
+    import numpy as np
+    import librosa
+    f0, voiced, _ = librosa.pyin(y, fmin=70, fmax=700, sr=sr, frame_length=1024)
+    f0 = f0[~np.isnan(f0)]
+    if len(f0) < 5:
+        return 0.0
+    st = 12 * np.log2(f0 / np.median(f0))
+    return float(np.percentile(st, 90) - np.percentile(st, 10))
 
 
 def atempo_chain(x):
@@ -111,21 +139,16 @@ def post(wav_in, mp3_out, sr, pitch, speed):
                    check=True, cwd=ROOT)
 
 
-def word_timings(mp3, words_json, whisper):
-    if whisper is None:
-        words_json.unlink(missing_ok=True)  # stale edge-tts timings would be wrong now
-        return "estimated by npm run timings"
-    segments, _ = whisper.transcribe(str(mp3), word_timestamps=True, language="en")
-    words = [{"text": w.word.strip(), "startMs": w.start * 1000, "endMs": w.end * 1000}
-             for s in segments for w in (s.words or [])]
-    words_json.write_text(json.dumps(words, indent=1))
-    return f"{len(words)} word timings (whisper)"
+def transcribe(path, whisper):
+    segments, _ = whisper.transcribe(str(path), word_timestamps=True, language="en")
+    return [{"text": w.word.strip(), "startMs": w.start * 1000, "endMs": w.end * 1000} for s in segments for w in (s.words or [])]
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--only", nargs="*", help="line ids to (re)generate, e.g. hero_line1")
-    ap.add_argument("--takes", type=int, default=1, help="extra takes saved to voiceover/takes/ to pick from")
+    ap.add_argument("--takes", type=int, default=3, help="takes per line; the best is picked automatically, all are kept in voiceover/takes/")
+    ap.add_argument("--max-takes", type=int, default=9, help="keep trying up to this many takes if a line is mispronounced")
     ap.add_argument("--seed", type=int, default=7)
     ap.add_argument("--device", default=None, help="mps | cuda | cpu (auto)")
     ap.add_argument("--dry-run", action="store_true", help="print the plan without loading the model")
@@ -155,50 +178,66 @@ def main():
         print("(faster-whisper not installed: caption timings will be estimated from loudness)")
 
     OUT.mkdir(parents=True, exist_ok=True)
+    (OUT / "takes").mkdir(exist_ok=True)
     tmp = pathlib.Path(tempfile.mkdtemp())
+    from difflib import SequenceMatcher
     for l in lines:
         c, a = CHARACTERS[l["character"]], ACTING[l["id"]]
         ref = REFS / f"{l['character']}.wav"
-        for take in range(1, max(1, args.takes) + 1):
-            torch.manual_seed(args.seed + take * 1000 + hash(l["id"]) % 997)
+        want = norm_words(l["text"])
+        n_syl = syllables(l["text"])
+        results = []
+        take = 0
+        # at least --takes takes; keep going (up to --max-takes) until one says every word right
+        while take < max(1, args.takes) or (take < args.max_takes and max(r["accuracy"] for r in results) < 0.99):
+            take += 1
+            torch.manual_seed(args.seed + take * 1000 + sum(map(ord, l["id"])))
             wav = model.generate(
-                tts_text(l["text"]),
+                tts_text(l["text"], variant=(take - 1) // 2),
                 audio_prompt_path=str(ref) if ref.exists() else None,
                 exaggeration=a["exaggeration"],
                 cfg_weight=a["cfg_weight"],
                 temperature=TEMPERATURE,
             )
             y = wav.squeeze(0).cpu().numpy()
-            y, _ = librosa.effects.trim(y, top_db=35)  # no dead air at either end
+            y, _ = librosa.effects.trim(y, top_db=45)  # no dead air, but keep soft first/last sounds
             raw = tmp / f"{l['id']}_{take}.wav"
             ta.save(str(raw), torch.from_numpy(y).unsqueeze(0), model.sr)
 
             measured = median_pitch(y, model.sr)
             pitch = min(1.8, max(0.85, c["target_hz"] / measured)) if measured else c["pitch"]
+            natural = len(y) / model.sr
+            speed = min(MAX_SPEEDUP, max(MIN_SPEED, (n_syl / natural) and TARGET_RATE / (n_syl / natural)))
+            if natural / speed > l["slot_s"]:
+                speed = min(MAX_SPEEDUP, natural / l["slot_s"])
+            final_len = natural / speed
 
-            length = len(y) / model.sr / c["speed"]
-            speed = c["speed"]
-            note = ""
-            if length > l["slot_s"]:
-                need = length / l["slot_s"]
-                speed *= min(MAX_SPEEDUP, need)
-                note = f"  sped up x{min(MAX_SPEEDUP, need):.2f} to fit"
-                if need > MAX_SPEEDUP:
-                    note += f"  STILL {length / MAX_SPEEDUP - l['slot_s']:.2f}s TOO LONG: try another take or lower exaggeration"
+            mp3 = OUT / "takes" / f"{l['id']}_take{take}.mp3"
+            post(raw, mp3, model.sr, pitch, speed)
+            words = transcribe(mp3, whisper) if whisper else []
+            got = norm_words(" ".join(w["text"] for w in words))
+            accuracy = SequenceMatcher(None, want, got).ratio() if whisper else 1.0
+            swing = pitch_swing(y, model.sr)
+            rate = n_syl / final_len
+            fits = final_len <= l["slot_s"]
+            score = 3 * accuracy + 0.6 * min(swing, 14) / 14 - 0.5 * abs(rate - TARGET_RATE) / TARGET_RATE - (0 if fits else 2)
+            results.append({"take": take, "mp3": mp3, "words": words, "score": score, "accuracy": accuracy})
+            print(f"  {l['id']} take {take}: \"{' '.join(got)}\"  acc {accuracy:.2f}  swing {swing:4.1f}st  "
+                  f"{rate:.1f} syl/s  {final_len:.2f}s/{l['slot_s']:.2f}s  {measured or 0:.0f}->{(measured or 0) * pitch:.0f}Hz  score {score:.2f}")
 
-            if take == 1:
-                dest = l["file"]
-            else:
-                (OUT / "takes").mkdir(exist_ok=True)
-                dest = OUT / "takes" / f"{l['id']}_take{take}.mp3"
-            post(raw, dest, model.sr, pitch, speed)
-            words = word_timings(dest, dest.with_suffix(".words.json"), whisper) if take == 1 else ""
-            hz = f"{measured:.0f}->{measured * pitch:.0f} Hz" if measured else f"pitch x{pitch:.2f}"
-            print(f"made  {dest.relative_to(ROOT)}  {length * c['speed'] / speed:.2f}s  {hz}{note}  {words}")
+        best = max(results, key=lambda r: r["score"])
+        if best["accuracy"] < 0.99:
+            print(f"  WARNING {l['id']}: no take said every word right (best {best['accuracy']:.2f}) - listen to it")
+        shutil.copyfile(best["mp3"], l["file"])
+        words_json = l["file"].with_suffix(".words.json")
+        if best["words"]:
+            words_json.write_text(json.dumps(best["words"], indent=1))
+        else:
+            words_json.unlink(missing_ok=True)
+        print(f"made  {l['file'].relative_to(ROOT)}  <- take {best['take']} (best of {len(results)})")
 
     print("\nNext: npm run timings && npm run render:enamel-v2")
-    if args.takes > 1:
-        print("To use another take: copy voiceover/takes/<id>_takeN.mp3 over voiceover/<id>.mp3, then npm run timings")
+    print("To use a different take: copy voiceover/takes/<id>_takeN.mp3 over voiceover/<id>.mp3 and delete <id>.words.json, then npm run timings")
 
 
 if __name__ == "__main__":

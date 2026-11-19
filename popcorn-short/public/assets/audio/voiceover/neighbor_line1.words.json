@@ -1,0 +1,27 @@
+[
+ {
+  "text": "How",
+  "startMs": 0.0,
+  "endMs": 80.0
+ },
+ {
+  "text": "did",
+  "startMs": 80.0,
+  "endMs": 200.0
+ },
+ {
+  "text": "you",
+  "startMs": 200.0,
+  "endMs": 520.0
+ },
+ {
+  "text": "prove",
+  "startMs": 520.0,
+  "endMs": 820.0
+ },
+ {
+  "text": "it?",
+  "startMs": 820.0,
+  "endMs": 1060.0
+ }
+]
