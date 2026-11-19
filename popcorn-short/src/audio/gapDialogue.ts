@@ -23,14 +23,14 @@ export const gapDialogue: GapLine[] = [
   {id: 'heart1', character: 'heart', text: "Dentist chair?! I'm beating SO fast!", fromFrame: 142, toFrame: 202, voiceFile: 'assets/audio/gap/voiceover/heart1.mp3'},
   {id: 'brain2', character: 'brain', text: 'Lungs. Breathe!', fromFrame: 204, toFrame: 236, voiceFile: 'assets/audio/gap/voiceover/brain2.mp3'},
   {id: 'lungs1', character: 'lungs', text: '...Sorry.', fromFrame: 238, toFrame: 266, voiceFile: 'assets/audio/gap/voiceover/lungs1.mp3'},
-  {id: 'mo2', character: 'mo', text: 'ONE tooth?! I chewed for you for twenty years!', fromFrame: 268, toFrame: 350, voiceFile: 'assets/audio/gap/voiceover/mo2.mp3'},
+  {id: 'mo2', character: 'mo', text: "ONE tooth?! I've chewed for you for YEARS!", fromFrame: 268, toFrame: 350, voiceFile: 'assets/audio/gap/voiceover/mo2.mp3'},
   // 3 Extraction
   {id: 'mo3', character: 'mo', text: 'Tell the bone... I loved it.', fromFrame: 386, toFrame: 450, voiceFile: 'assets/audio/gap/voiceover/mo3.mp3'},
   {id: 'gums1', character: 'gums', text: 'Patching the hole! Give us a few weeks.', fromFrame: 456, toFrame: 530, voiceFile: 'assets/audio/gap/voiceover/gums1.mp3'},
   // 4 Tongue
   {id: 'tongue1', character: 'tongue', text: "Ooh, a hole. I'm touching it.", fromFrame: 532, toFrame: 590, voiceFile: 'assets/audio/gap/voiceover/tongue1.mp3'},
-  {id: 'brain3', character: 'brain', text: 'Tongue! Stop poking!', fromFrame: 592, toFrame: 632, voiceFile: 'assets/audio/gap/voiceover/brain3.mp3'},
-  {id: 'tongue2', character: 'tongue', text: "Can't. Won't.", fromFrame: 634, toFrame: 664, voiceFile: 'assets/audio/gap/voiceover/tongue2.mp3'},
+  {id: 'brain3', character: 'brain', text: 'Tongue! Stop poking!', fromFrame: 592, toFrame: 628, voiceFile: 'assets/audio/gap/voiceover/brain3.mp3'},
+  {id: 'tongue2', character: 'tongue', text: "Can't. Won't.", fromFrame: 630, toFrame: 666, voiceFile: 'assets/audio/gap/voiceover/tongue2.mp3'},
   // 5 Quiz
   {id: 'brain4', character: 'brain', text: 'Who moves into the gap first? Guess in the comments!', fromFrame: 668, toFrame: 790, voiceFile: 'assets/audio/gap/voiceover/brain4.mp3'},
   // 6 Land grab

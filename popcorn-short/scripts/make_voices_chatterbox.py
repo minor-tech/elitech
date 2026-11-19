@@ -117,8 +117,13 @@ def syllables(text):
     return sum(max(1, len(re.findall(r"[aeiouy]+", w)) - (1 if w.endswith("e") and len(w) > 3 else 0)) for w in words)
 
 
+HOMOPHONES = {"whole": "hole", "wont": "won't", "your": "you're", "to": "too", "two": "too", "for": "four"}
+
+
 def norm_words(text):
-    return [w for w in re.sub(r"[^a-z' ]", " ", text.lower()).split() if w]
+    """Lower-case words; sound-alikes collapse so a correct take isn't failed for Whisper's spelling."""
+    words = [w for w in re.sub(r"[^a-z' ]", " ", text.lower()).split() if w]
+    return [HOMOPHONES.get(w, w) for w in words]
 
 
 def pitch_swing(y, sr):
@@ -192,8 +197,8 @@ def main():
     except ImportError:
         print("(faster-whisper not installed: caption timings will be estimated from loudness)")
 
-    OUT.mkdir(parents=True, exist_ok=True)
-    (OUT / "takes").mkdir(exist_ok=True)
+    for l in lines:
+        (l["file"].parent / "takes").mkdir(parents=True, exist_ok=True)  # takes live next to each video's voices
     tmp = pathlib.Path(tempfile.mkdtemp())
     from difflib import SequenceMatcher
     for l in lines:
@@ -205,7 +210,7 @@ def main():
         results = []
         take = 0
         # at least --takes takes; keep going (up to --max-takes) until one says every word right
-        good = lambda: any(r["accuracy"] >= 0.99 and r["on_pitch"] for r in results)
+        good = lambda: any(r["accuracy"] >= 0.99 and r["on_pitch"] and r["fits"] for r in results)
         while take < max(1, args.takes) or (take < args.max_takes and not good()):
             take += 1
             torch.manual_seed(args.seed + take * 1000 + sum(map(ord, l["id"])))
@@ -229,7 +234,7 @@ def main():
                 speed = min(MAX_SPEEDUP, natural / l["slot_s"])
             final_len = natural / speed
 
-            mp3 = OUT / "takes" / f"{l['id']}_take{take}.mp3"
+            mp3 = l["file"].parent / "takes" / f"{l['id']}_take{take}.mp3"
             post(raw, mp3, model.sr, pitch, speed)
             words = transcribe(mp3, whisper) if whisper else []
             got = norm_words(" ".join(w["text"] for w in words))
@@ -241,7 +246,7 @@ def main():
             on_pitch = bool(measured) and abs(math.log(measured * pitch / c["target_hz"])) < math.log(1.08)
             score = (3 * accuracy + 0.6 * min(swing, 14) / 14 - 0.5 * abs(rate - c["rate"]) / c["rate"]
                      - (0 if fits else 2) - (0 if on_pitch else 1))
-            results.append({"take": take, "mp3": mp3, "words": words, "score": score, "accuracy": accuracy, "on_pitch": on_pitch})
+            results.append({"take": take, "mp3": mp3, "words": words, "score": score, "accuracy": accuracy, "on_pitch": on_pitch, "fits": fits})
             print(f"  {l['id']} take {take}: \"{' '.join(got)}\"  acc {accuracy:.2f}  swing {swing:4.1f}st  "
                   f"{rate:.1f} syl/s  {final_len:.2f}s/{l['slot_s']:.2f}s  {measured or 0:.0f}->{(measured or 0) * pitch:.0f}Hz  score {score:.2f}")
 

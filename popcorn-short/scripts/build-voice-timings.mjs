@@ -32,7 +32,11 @@ const decode = (file) => {
   return new Float32Array(out.buffer, out.byteOffset, out.byteLength / 4);
 };
 
-const norm = (w) => w.toLowerCase().replace(/[^a-z0-9']/g, '');
+const HOMOPHONES = {whole: 'hole', wont: "won't", four: 'for', two: 'to', too: 'to', your: "you're"};
+const norm = (w) => {
+  const x = w.toLowerCase().replace(/[^a-z0-9']/g, '');
+  return HOMOPHONES[x] ?? x;
+};
 const pauseAfter = (w) => (/\.\.\.$/.test(w) ? 7 : /[.?!]$/.test(w) ? 5 : /,$/.test(w) ? 3 : 0);
 
 const result = {};
@@ -70,9 +74,12 @@ for (const l of lines) {
     let j = 0;
     words = display.map((w) => {
       const key = norm(w);
-      while (j < tts.length && norm(tts[j].text) !== key && !key.startsWith(norm(tts[j].text))) j++;
-      const hit = tts[Math.min(j, tts.length - 1)];
-      j++;
+      // look at most 2 words ahead for the match; otherwise assume it's this position (misheard word)
+      let k = j;
+      while (k < Math.min(tts.length, j + 3) && norm(tts[k].text) !== key && !key.startsWith(norm(tts[k].text))) k++;
+      if (k >= Math.min(tts.length, j + 3)) k = j;
+      const hit = tts[Math.min(k, tts.length - 1)];
+      j = k + 1;
       return {text: w, frame: Math.round((hit.startMs / 1000) * FPS)};
     });
     if (words.every((w, i) => i === 0 || w.frame >= words[i - 1].frame)) source = 'exact (word timestamps)';

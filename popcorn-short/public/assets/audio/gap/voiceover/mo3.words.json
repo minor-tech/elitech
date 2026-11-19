@@ -1,0 +1,32 @@
+[
+ {
+  "text": "Tell",
+  "startMs": 0.0,
+  "endMs": 180.0
+ },
+ {
+  "text": "the",
+  "startMs": 180.0,
+  "endMs": 340.0
+ },
+ {
+  "text": "bone,",
+  "startMs": 340.0,
+  "endMs": 580.0
+ },
+ {
+  "text": "I",
+  "startMs": 820.0,
+  "endMs": 940.0
+ },
+ {
+  "text": "loved",
+  "startMs": 940.0,
+  "endMs": 1400.0
+ },
+ {
+  "text": "it.",
+  "startMs": 1400.0,
+  "endMs": 1600.0
+ }
+]

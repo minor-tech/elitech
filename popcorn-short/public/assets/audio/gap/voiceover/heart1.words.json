@@ -2,26 +2,31 @@
  {
   "text": "Dentist",
   "startMs": 0.0,
-  "endMs": 220.0
+  "endMs": 260.0
  },
  {
-  "text": "Chair,",
-  "startMs": 220.0,
-  "endMs": 420.0
+  "text": "chair,",
+  "startMs": 260.0,
+  "endMs": 480.0
  },
  {
-  "text": "1",
-  "startMs": 680.0,
-  "endMs": 800.0
+  "text": "I'm",
+  "startMs": 780.0,
+  "endMs": 880.0
  },
  {
-  "text": ".40",
-  "startMs": 800.0,
-  "endMs": 1060.0
+  "text": "beating",
+  "startMs": 880.0,
+  "endMs": 1080.0
  },
  {
-  "text": "BPM",
-  "startMs": 1060.0,
-  "endMs": 1460.0
+  "text": "so",
+  "startMs": 1080.0,
+  "endMs": 1320.0
+ },
+ {
+  "text": "fast!",
+  "startMs": 1320.0,
+  "endMs": 1600.0
  }
 ]

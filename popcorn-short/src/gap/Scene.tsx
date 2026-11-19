@@ -46,7 +46,7 @@ export const END = 1290;
 // ---------------------------------------------------------------- pieces
 const LowerBone: React.FC<{dip: number}> = ({dip}) => {
   const y = LG + 70;
-  const d = `M -60 ${y} L 370 ${y} C 450 ${y}, 460 ${y + dip}, 540 ${y + dip} C 620 ${y + dip}, 630 ${y}, 710 ${y} L 1140 ${y} L 1140 1990 L -60 1990 Z`;
+  const d = `M -60 ${y} L 370 ${y} C 450 ${y}, 460 ${y + dip}, 540 ${y + dip} C 620 ${y + dip}, 630 ${y}, 710 ${y} L 1140 ${y} L 1140 2400 L -60 2400 Z`;
   return (
     <g>
       <defs>
@@ -224,12 +224,12 @@ const Mouth: React.FC<{f: number}> = ({f}) => {
           {f >= PATCH[0] - 4 && f < PATCH[1] + 20 && (
             <g opacity={interpolate(f, [PATCH[1] + 8, PATCH[1] + 20], [1, 0], clamp)}>
               {[-1, 1].map((side) => {
-                const hx = MO_X + side * (170 - patch * 80);
-                const bob = Math.abs(Math.sin(f * 0.6 + side)) * -12;
+                const hx = MO_X + side * (190 - patch * 70);
+                const bob = Math.abs(Math.sin(f * 0.6 + side)) * -16;
                 return (
                   <g key={side}>
-                    <Googly x={hx} y={LG + 70 + bob} s={0.45} eyes="open" mouth={talkOf(f, 'gums') > 0.08 ? 'grin' : 'smile'} look={[side * -10, 6]} talk={talkOf(f, 'gums')} />
-                    <HardHat x={hx + 2} y={LG + 34 + bob} s={0.75} />
+                    <Googly x={hx} y={LG - 40 + bob} s={0.9} eyes="open" mouth={talkOf(f, 'gums') > 0.08 ? 'grin' : 'smile'} look={[side * -10, 6]} talk={talkOf(f, 'gums')} />
+                    <HardHat x={hx + 2} y={LG - 108 + bob} s={1.5} />
                   </g>
                 );
               })}
@@ -350,14 +350,14 @@ const shotAt = (f: number): {kind: 'hq' | 'mouth' | 'chest'; cam: Cam; mood?: 'a
 
 const BrainInset: React.FC<{f: number}> = ({f}) => (
   <g>
-    <circle cx={160} cy={190} r={130} fill={X.bg} stroke={X.white} strokeWidth={10} />
+    <circle cx={170} cy={1690} r={130} fill={X.bg} stroke={X.white} strokeWidth={10} />
     <defs>
       <clipPath id="inset">
-        <circle cx={160} cy={190} r={124} />
+        <circle cx={170} cy={1690} r={124} />
       </clipPath>
     </defs>
     <g clipPath="url(#inset)">
-      <Brain x={160} y={235} s={0.42} frame={f} headset eyes="open" mouth="smile" look={[0, 0]} talk={talkOf(f, 'brain')} />
+      <Brain x={170} y={1735} s={0.42} frame={f} headset eyes="open" mouth="smile" look={[0, 0]} talk={talkOf(f, 'brain')} />
     </g>
   </g>
 );
@@ -403,8 +403,8 @@ const Quiz: React.FC<{f: number}> = ({f}) => {
     <g>
       <rect x={-60} y={-60} width={1200} height={2040} fill="#000" opacity={0.35} />
       <ellipse cx={540} cy={LG + 20} rx={170} ry={60} fill={X.gold} opacity={0.35 + 0.2 * Math.sin(f * 0.4)} />
-      {badge(140, 1010, 'A', 6, 180, 1150)}
-      {badge(940, 1010, 'B', 12, 905, 1150)}
+      {badge(64, 1240, 'A', 6, 120, 1180)}
+      {badge(1016, 1240, 'B', 12, 960, 1180)}
       {badge(800, 700, 'C', 18, 640, 720)}
       <Big text="WHO MOVES IN?" x={540} y={300} size={104} color={X.white} s={sp(f, QUIZ[0])} />
       <g transform="translate(960 150)">
@@ -436,7 +436,7 @@ const LaterCard: React.FC<{f: number}> = ({f}) => {
 export const GapScene: React.FC = () => {
   const f = useCurrentFrame();
   const shot = shotAt(f);
-  const insetOn = (f >= QUIZ[0] && f < QUIZ[1]) || (f >= 1000 && f < 1060) || f >= 1176;
+  const insetOn = (f >= QUIZ[0] && f < QUIZ[1]) || (f >= 1000 && f < 1060) || (f >= 1176 && f < END);
   return (
     <g>
       {shot.kind === 'hq' && <BrainHQ f={f} alarm={f < 80} mood={shot.mood ?? 'calm'} />}
@@ -450,16 +450,16 @@ export const GapScene: React.FC = () => {
             <Label text="Molar" x={850} y={980} s={labelS(f, 84, 140)} px={700} py={1090} />
             <Label text="Socket" x={250} y={1760} s={labelS(f, 392, 452)} px={MO_X} py={LG + 30} />
             <Label text="Gums" x={830} y={1760} s={labelS(f, 460, 528)} px={650} py={LG + 60} />
-            <Label text="Tongue" x={870} y={760} s={labelS(f, 536, 590)} />
+            <Label text="Tongue" x={880} y={870} s={labelS(f, 536, 590)} />
             <Label text="Tipping" x={905} y={1760} s={labelS(f, 822, 1000)} />
             <Label text="Drifting" x={185} y={1760} s={labelS(f, 862, 1000)} />
             <Label text="Over-erupting" x={540} y={120} s={labelS(f, 930, 1058)} />
-            <Label text="Jaw Bone" x={300} y={1720} s={labelS(f, BONE[0], BONE[1])} />
+            <Label text="Jaw Bone" x={540} y={1800} s={labelS(f, BONE[0], BONE[1])} />
           </g>
           {/* bone gets a face in its close-up */}
           {f >= BONE[0] && f < 1176 && (
             <g transform={`translate(540 960) scale(${shot.cam.s}) translate(${-shot.cam.cx} ${-shot.cam.cy})`}>
-              <Googly x={540} y={1640} s={0.7} eyes="half" brows="worried" mouth="frown" look={[0, 8]} talk={talkOf(f, 'bone')} />
+              <Googly x={540} y={1650} s={1.0} eyes="half" brows="worried" mouth="frown" look={[0, 8]} talk={talkOf(f, 'bone')} />
             </g>
           )}
           <Quiz f={f} />
@@ -469,7 +469,7 @@ export const GapScene: React.FC = () => {
             <g>
               <Big text="TEETH DON'T GROW." x={540} y={250} size={92} color={X.white} s={sp(f, END)} />
               <Big text="THEY MOVE." x={540} y={360} size={104} color={X.gold} s={sp(f, END + 8)} />
-              <Big text="GOT A GAP? COMMENT 🦷" x={540} y={1640} size={72} color={X.white} s={sp(f, END + 16)} />
+              <Big text="GOT A GAP? COMMENT 🦷" x={540} y={1560} size={72} color={X.white} s={sp(f, END + 16)} />
             </g>
           )}
         </g>
