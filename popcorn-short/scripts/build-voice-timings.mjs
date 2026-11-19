@@ -72,7 +72,7 @@ for (const l of lines) {
       j++;
       return {text: w, frame: Math.round((hit.startMs / 1000) * FPS)};
     });
-    if (words.every((w, i) => i === 0 || w.frame >= words[i - 1].frame)) source = 'exact (edge-tts)';
+    if (words.every((w, i) => i === 0 || w.frame >= words[i - 1].frame)) source = 'exact (word timestamps)';
     else words = null;
   }
   if (!words) {

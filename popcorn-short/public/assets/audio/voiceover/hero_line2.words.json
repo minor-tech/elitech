@@ -2,11 +2,11 @@
  {
   "text": "Watch",
   "startMs": 0.0,
-  "endMs": 180.0
+  "endMs": 160.0
  },
  {
   "text": "this.",
-  "startMs": 180.0,
-  "endMs": 320.0
+  "startMs": 160.0,
+  "endMs": 340.0
  }
 ]

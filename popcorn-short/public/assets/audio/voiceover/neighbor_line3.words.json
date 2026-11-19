@@ -1,32 +1,27 @@
 [
  {
-  "text": "Oh,",
+  "text": "So",
   "startMs": 0.0,
-  "endMs": 160.0
- },
- {
-  "text": "so",
-  "startMs": 340.0,
-  "endMs": 440.0
+  "endMs": 280.0
  },
  {
   "text": "you're",
-  "startMs": 440.0,
-  "endMs": 640.0
+  "startMs": 280.0,
+  "endMs": 480.0
  },
  {
   "text": "tough",
-  "startMs": 640.0,
-  "endMs": 760.0
+  "startMs": 480.0,
+  "endMs": 640.0
  },
  {
   "text": "and",
-  "startMs": 760.0,
-  "endMs": 920.0
+  "startMs": 640.0,
+  "endMs": 800.0
  },
  {
-  "text": "fragile.",
-  "startMs": 920.0,
-  "endMs": 1140.0
+  "text": "fragile?",
+  "startMs": 800.0,
+  "endMs": 1060.0
  }
 ]
