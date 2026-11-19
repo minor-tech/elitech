@@ -12,7 +12,8 @@
     "audio:v2": "node scripts/make-v2-audio.mjs",
     "voices": "python3 scripts/make_voices.py",
     "timings": "node scripts/build-voice-timings.mjs",
-    "render:enamel-v2": "node scripts/build-voice-timings.mjs && remotion render EnamelShortV2 out/enamel-short-v2.mp4"
+    "render:enamel-v2": "node scripts/build-voice-timings.mjs && remotion render EnamelShortV2 out/enamel-short-v2.mp4",
+    "voices:chatterbox": "python3 scripts/make_voices_chatterbox.py"
   },
   "dependencies": {
     "@remotion/bundler": "^4.0.545",

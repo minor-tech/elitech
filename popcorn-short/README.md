@@ -82,7 +82,14 @@ public/assets/audio/bgm/lofi_bgm.mp3
 
 The committed files are **stand-ins** (espeak robot voices, synthesised SFX/BGM) so the video renders today. To upgrade:
 
-1. **Voices (free, edge-tts)** on your own machine: `pip install edge-tts && npm run voices`. This writes the 7 MP3s plus exact word timings (`*.words.json`).
+1. **Voices (recommended: Chatterbox, free + expressive)** on your Mac:
+   ```bash
+   python3.11 -m venv ~/chatterbox-env && source ~/chatterbox-env/bin/activate
+   pip install chatterbox-tts faster-whisper
+   python3 scripts/make_voices_chatterbox.py --only hero_line1   # test one line
+   python3 scripts/make_voices_chatterbox.py --takes 3           # all lines, 3 takes each
+   ```
+   Acting per line (`ACTING`) and cartoon pitch per character (`CHARACTERS`) sit at the top of the script. Lines that run long are sped up to fit their slot. Alternative: `pip install edge-tts && npm run voices` (flatter delivery).
 2. **SFX / BGM**: download from Pixabay / Mixkit / Uppbeat and save over the files above with the same names (any length; volumes live in `sfxData.ts`).
 3. `npm run timings`: re-syncs captions and talking mouths to the new audio and warns if a line runs past its window.
 4. `npm run render:enamel-v2` -> `out/enamel-short-v2.mp4`
