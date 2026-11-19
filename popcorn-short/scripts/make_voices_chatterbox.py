@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""EnamelShortV2 voiceovers with Chatterbox (resemble-ai/chatterbox, MIT, free, runs locally).
+r"""EnamelShortV2 voiceovers with Chatterbox (resemble-ai/chatterbox, MIT, free, runs locally).
 
 One-time setup (Python 3.11 or 3.12):
     Mac:     python3.11 -m venv ~/chatterbox-env && source ~/chatterbox-env/bin/activate
