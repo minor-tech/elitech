@@ -37,17 +37,15 @@ CHARACTERS = {
     # Enamel short
     "hero": {"target_hz": 290, "pitch": 1.3, "rate": 4.2, "exag": 1.0, "cfg": 0.4},
     "neighborLeft": {"target_hz": 350, "pitch": 1.45, "rate": 4.2, "exag": 1.1, "cfg": 0.35},
-    # The Gap
-    "brain": {"target_hz": 210, "pitch": 1.1, "rate": 4.3, "exag": 0.9, "cfg": 0.4},  # stressed manager
-    "mo": {"target_hz": 290, "pitch": 1.3, "rate": 4.0, "exag": 1.25, "cfg": 0.35},  # theatrical patient
-    "heart": {"target_hz": 380, "pitch": 1.6, "rate": 5.0, "exag": 1.3, "cfg": 0.3},  # panicky, fast
-    "lungs": {"target_hz": 410, "pitch": 1.7, "rate": 3.8, "exag": 0.9, "cfg": 0.4},  # squeaky, deflated
-    "gums": {"target_hz": 330, "pitch": 1.45, "rate": 4.4, "exag": 1.1, "cfg": 0.4},  # upbeat builders
-    "tongue": {"target_hz": 360, "pitch": 1.55, "rate": 4.8, "exag": 1.2, "cfg": 0.35},  # giggly, fast
-    "lefty": {"target_hz": 340, "pitch": 1.5, "rate": 4.2, "exag": 1.0, "cfg": 0.4},  # sly
-    "righty": {"target_hz": 235, "pitch": 1.15, "rate": 4.4, "exag": 1.3, "cfg": 0.35},  # brash
-    "upper": {"target_hz": 165, "pitch": 0.85, "rate": 3.5, "exag": 0.9, "cfg": 0.45},  # slow, deep
-    "bone": {"target_hz": 150, "pitch": 0.8, "rate": 3.6, "exag": 0.6, "cfg": 0.45},  # tired, low
+    # The Gap v2: fixed cartoon pitch-up (length unchanged), exaggeration 0.8 / cfg 0.3 for everyone
+    "brain": {"fixed_pitch": 1.1, "exag": 0.8, "cfg": 0.3},
+    "mo": {"fixed_pitch": 1.15, "exag": 0.8, "cfg": 0.3},  # the main molar
+    "lefty": {"fixed_pitch": 1.3, "exag": 0.8, "cfg": 0.3},  # neighbour teeth
+    "righty": {"fixed_pitch": 1.3, "exag": 0.8, "cfg": 0.3},
+    "upper": {"fixed_pitch": 1.3, "exag": 0.8, "cfg": 0.3},
+    "tongue": {"fixed_pitch": 1.3, "exag": 0.8, "cfg": 0.3},
+    "gums": {"fixed_pitch": 1.3, "exag": 0.8, "cfg": 0.3},
+    "bone": {"fixed_pitch": 1.1, "exag": 0.8, "cfg": 0.3},
 }
 # ---- Acting per line (from the script's directions) ----------------------------
 # exaggeration: 0.25 flat ... 0.5 default ... 1.0+ over the top
@@ -177,7 +175,7 @@ def main():
     for l in lines:
         c = CHARACTERS[l["character"]]
         a = ACTING.get(l["id"], {"exaggeration": c["exag"], "cfg_weight": c["cfg"]})
-        print(f"{l['id']:15} ->{c['target_hz']}Hz  exag {a['exaggeration']:.2f}  cfg {a['cfg_weight']:.2f}  slot {l['slot_s']:.2f}s  \"{l['text']}\"")
+        print(f"{l['id']:15} {'x' + str(c['fixed_pitch']) if 'fixed_pitch' in c else '->' + str(c['target_hz']) + 'Hz'}  exag {a['exaggeration']:.2f}  cfg {a['cfg_weight']:.2f}  slot {l['slot_s']:.2f}s  \"{l['text']}\"")
     if args.dry_run:
         return
 
@@ -227,9 +225,13 @@ def main():
             ta.save(str(raw), torch.from_numpy(y).unsqueeze(0), model.sr)
 
             measured = median_pitch(y, model.sr)
-            pitch = min(PITCH_RANGE[1], max(PITCH_RANGE[0], c["target_hz"] / measured)) if measured else c["pitch"]
+            fixed = "fixed_pitch" in c
+            if fixed:
+                pitch = c["fixed_pitch"]  # same multiplier on every take; length kept (speed 1)
+            else:
+                pitch = min(PITCH_RANGE[1], max(PITCH_RANGE[0], c["target_hz"] / measured)) if measured else c["pitch"]
             natural = len(y) / model.sr
-            speed = min(MAX_SPEEDUP, max(MIN_SPEED, (n_syl / natural) and c["rate"] / (n_syl / natural)))
+            speed = 1.0 if fixed else min(MAX_SPEEDUP, max(MIN_SPEED, (n_syl / natural) and c["rate"] / (n_syl / natural)))
             if natural / speed > l["slot_s"]:
                 speed = min(MAX_SPEEDUP, natural / l["slot_s"])
             final_len = natural / speed
@@ -243,9 +245,16 @@ def main():
             rate = n_syl / final_len
             fits = final_len <= l["slot_s"]
             # same character = same voice: a take whose pitch can't reach the target (shift capped at 1.8x) is penalised
-            on_pitch = bool(measured) and abs(math.log(measured * pitch / c["target_hz"])) < math.log(1.08)
-            score = (3 * accuracy + 0.6 * min(swing, 14) / 14 - 0.5 * abs(rate - c["rate"]) / c["rate"]
-                     - (0 if fits else 2) - (0 if on_pitch else 1))
+            if fixed:
+                on_pitch = True
+                # fixed multiplier: prefer brighter base voices (more cartoony, more consistent)
+                pitch_term = 0.4 * min(1.0, max(0.0, ((measured or 150) - 150) / 90))
+                rate_term = 0.0
+            else:
+                on_pitch = bool(measured) and abs(math.log(measured * pitch / c["target_hz"])) < math.log(1.08)
+                pitch_term = 0.0 if on_pitch else -1.0
+                rate_term = -0.5 * abs(rate - c["rate"]) / c["rate"]
+            score = 3 * accuracy + 0.6 * min(swing, 14) / 14 + rate_term + pitch_term - (0 if fits else 2)
             results.append({"take": take, "mp3": mp3, "words": words, "score": score, "accuracy": accuracy, "on_pitch": on_pitch, "fits": fits})
             print(f"  {l['id']} take {take}: \"{' '.join(got)}\"  acc {accuracy:.2f}  swing {swing:4.1f}st  "
                   f"{rate:.1f} syl/s  {final_len:.2f}s/{l['slot_s']:.2f}s  {measured or 0:.0f}->{(measured or 0) * pitch:.0f}Hz  score {score:.2f}")

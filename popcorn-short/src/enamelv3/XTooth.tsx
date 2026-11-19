@@ -3,7 +3,7 @@ import {X} from './style';
 
 export type XEyes = 'open' | 'wide' | 'closed' | 'half' | 'squeeze';
 export type XBrows = 'none' | 'proud' | 'worried' | 'angry' | 'skeptical';
-export type XMouth = 'smile' | 'grin' | 'o' | 'frown' | 'flat' | 'wavy' | 'grit' | 'smirk';
+export type XMouth = 'smile' | 'grin' | 'o' | 'frown' | 'flat' | 'wavy' | 'grit' | 'smirk' | 'yell';
 export type XArms = 'none' | 'rest' | 'flex' | 'panic' | 'reach';
 
 // Molar in cross-section. Local box 400 x 480, gum line (CEJ) at y=320, root tips at ~470.
@@ -100,6 +100,13 @@ const MouthX: React.FC<{kind: XMouth; talk: number; frame: number}> = ({kind, ta
       return <path d={`M 178 ${y - 6} Q 200 ${y + 26} 222 ${y - 6} Z`} fill={X.line} stroke={X.ink} strokeWidth={5} strokeLinejoin="round" />;
     case 'o':
       return <ellipse cx={200} cy={y + 4} rx={10} ry={14} fill={X.line} stroke={X.ink} strokeWidth={4} />;
+    case 'yell':
+      return (
+        <g>
+          <ellipse cx={200} cy={y + 8} rx={26} ry={24} fill={X.line} stroke={X.ink} strokeWidth={5} />
+          <ellipse cx={200} cy={y + 20} rx={14} ry={8} fill={X.pulp} />
+        </g>
+      );
     case 'frown':
       return <path d={`M 184 ${y + 8} Q 200 ${y - 6} 216 ${y + 8}`} {...s} />;
     case 'flat':
@@ -171,7 +178,23 @@ export type XToothProps = {
   faceless?: boolean;
   flip?: boolean; // upper-jaw tooth
   frame?: number;
+  shade?: boolean; // soft darker edge + crown highlight (needs <ShadeDefs/> once in the SVG)
 };
+
+/** Gradients used by `shade` - render once per SVG. */
+export const ShadeDefs: React.FC = () => (
+  <defs>
+    <linearGradient id="xtShade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0.55" stopColor="#000" stopOpacity={0} />
+      <stop offset="0.85" stopColor="#000" stopOpacity={0.1} />
+      <stop offset="1" stopColor="#000" stopOpacity={0.16} />
+    </linearGradient>
+    <radialGradient id="xtDrop">
+      <stop offset="0" stopColor="#000" stopOpacity={0.3} />
+      <stop offset="1" stopColor="#000" stopOpacity={0} />
+    </radialGradient>
+  </defs>
+);
 
 export const XTooth: React.FC<XToothProps> = ({
   left,
@@ -193,6 +216,7 @@ export const XTooth: React.FC<XToothProps> = ({
   faceless = false,
   flip = false,
   frame = 0,
+  shade = false,
 }) => {
   const ax = 200;
   const ay = 320;
@@ -205,11 +229,16 @@ export const XTooth: React.FC<XToothProps> = ({
         <path d={OUTER} fill={X.dentinDark} stroke={X.line} strokeWidth={5} strokeLinejoin="round" />
         <path d={ENAMEL} fill={X.enamel} stroke={X.line} strokeWidth={5} strokeLinejoin="round" />
         <path d={DENTIN} fill={X.dentin} stroke={X.dentinDark} strokeWidth={3} strokeLinejoin="round" />
-        <path d="M 304 70 C 326 100, 334 140, 332 170" stroke={X.white} strokeWidth={10} fill="none" strokeLinecap="round" opacity={0.9} />
+        {shade ? (
+          <path d="M 70 150 C 66 110, 84 74, 116 58" stroke={X.white} strokeWidth={14} fill="none" strokeLinecap="round" opacity={0.95} />
+        ) : (
+          <path d="M 304 70 C 326 100, 334 140, 332 170" stroke={X.white} strokeWidth={10} fill="none" strokeLinecap="round" opacity={0.9} />
+        )}
         <path d={PULP} fill={X.pulp} stroke={X.pulpDark} strokeWidth={4} strokeLinejoin="round" />
         {NERVES.map((n, i) => (
           <path key={i} d={n.d} stroke={n.c} strokeWidth={4} fill="none" strokeLinecap="round" opacity={0.85} />
         ))}
+        {shade && <path d={OUTER} fill="url(#xtShade)" />}
         {pain > 0 && (
           <g>
             <path d={PULP} fill={X.red} opacity={0.65 * pain} />

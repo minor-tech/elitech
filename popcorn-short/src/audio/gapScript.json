@@ -1,0 +1,22 @@
+{
+  "_doc": "The Gap v2 script. Frames in gapDialogue.ts are generated from this + the real voice lengths by scripts/layout-gap.mjs. pause = frames of silence/action before the line.",
+  "tail": 110,
+  "lines": [
+    {"id": "brain1", "character": "brain", "pause": 0, "text": "Red alert! Lower left molar is screaming!"},
+    {"id": "mo1", "character": "mo", "pause": 4, "text": "I'm fine! ...I'm so NOT fine!"},
+    {"id": "mo2", "character": "mo", "pause": 6, "text": "WHAT?! ONE tooth?! I chewed for YEARS!"},
+    {"id": "mo3", "character": "mo", "pause": 32, "text": "Tell the bone... I loved it!"},
+    {"id": "gums1", "character": "gums", "pause": 8, "text": "Patching the hole! Give us a few weeks!"},
+    {"id": "tongue1", "character": "tongue", "pause": 12, "text": "Ooh, a hole! I'm touching it!"},
+    {"id": "brain3", "character": "brain", "pause": 4, "text": "Tongue! Stop poking!"},
+    {"id": "tongue2", "character": "tongue", "pause": 4, "text": "Can't. Won't."},
+    {"id": "brain4", "character": "brain", "pause": 10, "text": "Who moves in first? Comment your guess!"},
+    {"id": "righty1", "character": "righty", "pause": 48, "text": "Free real estate!"},
+    {"id": "lefty1", "character": "lefty", "pause": 8, "text": "I'm not moving. I'm just leaning."},
+    {"id": "upper1", "character": "upper", "pause": 10, "text": "Nobody bites me back... so I'm coming DOWN!"},
+    {"id": "brain5", "character": "brain", "pause": 10, "text": "Trick question. All of them!"},
+    {"id": "bone1", "character": "bone", "pause": 10, "text": "No workout? I shrink up to half!"},
+    {"id": "brain6", "character": "brain", "pause": 8, "text": "Lost a tooth? Ask your dentist early!"},
+    {"id": "upper2", "character": "upper", "pause": 6, "text": "Or I keep coming down!"}
+  ]
+}

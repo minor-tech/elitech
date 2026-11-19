@@ -165,6 +165,9 @@ export const Tongue: React.FC<Face & {tip: [number, number]; squish?: number}> =
   return (
     <g>
       <path d={d} fill="#F07A92" stroke={X.line} strokeWidth={8} strokeLinejoin="round" />
+      {/* soft shading: darker underside + a highlight streak along the top */}
+      <path d={d} fill="url(#tongueShade)" />
+      <path d={`M ${tx + 330} ${ty - 520} C ${tx + 160} ${ty - 470}, ${tx + 20} ${ty - 360}, ${tx - 40} ${ty - 200}`} stroke="#FFC2CF" strokeWidth={16} fill="none" strokeLinecap="round" opacity={0.85} />
       <path d={`M ${tx + 260} ${ty - 400} C ${tx + 120} ${ty - 340}, ${tx + 20} ${ty - 260}, ${tx - 10} ${ty - 140 + squish}`} stroke="#D35A75" strokeWidth={8} fill="none" strokeLinecap="round" />
       <Googly x={tx + 120} y={ty - 360} s={0.85} {...face} />
     </g>
@@ -200,4 +203,37 @@ export const HardHat: React.FC<{x: number; y: number; s?: number}> = ({x, y, s =
     <path d="M -50 0 C -50 -50, 50 -50, 50 0 Z" fill={X.gold} stroke={INK} strokeWidth={6} />
     <rect x={-62} y={-6} width={124} height={14} rx={6} fill={X.gold} stroke={INK} strokeWidth={6} />
   </g>
+);
+
+/** Pointing-down hand (drawn, not an emoji). */
+export const PointDown: React.FC<{x: number; y: number; s?: number; bob?: number}> = ({x, y, s = 1, bob = 0}) => (
+  <g transform={`translate(${x} ${y + bob}) scale(${s})`}>
+    {/* index finger */}
+    <rect x={-14} y={-6} width={28} height={70} rx={14} fill={X.white} stroke={INK} strokeWidth={6} />
+    {/* fist */}
+    <rect x={-40} y={-62} width={80} height={64} rx={24} fill={X.white} stroke={INK} strokeWidth={6} />
+    <path d="M -20 -60 L -20 -4 M 0 -62 L 0 -4 M 20 -60 L 20 -6" stroke={INK} strokeWidth={4} />
+    {/* thumb */}
+    <rect x={-54} y={-46} width={26} height={40} rx={13} fill={X.white} stroke={INK} strokeWidth={6} />
+    {/* cuff */}
+    <rect x={-36} y={-92} width={72} height={30} rx={8} fill={X.gold} stroke={INK} strokeWidth={6} />
+  </g>
+);
+
+/** Gradients for gums / tongue / drop shadows - render once per SVG. */
+export const SoftShadeDefs: React.FC = () => (
+  <defs>
+    <linearGradient id="tongueShade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0.45" stopColor="#000" stopOpacity={0} />
+      <stop offset="1" stopColor="#000" stopOpacity={0.16} />
+    </linearGradient>
+    <linearGradient id="gumShadeDown" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0.35" stopColor="#000" stopOpacity={0} />
+      <stop offset="1" stopColor="#000" stopOpacity={0.15} />
+    </linearGradient>
+    <linearGradient id="gumShadeUp" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0.35" stopColor="#000" stopOpacity={0} />
+      <stop offset="1" stopColor="#000" stopOpacity={0.15} />
+    </linearGradient>
+  </defs>
 );

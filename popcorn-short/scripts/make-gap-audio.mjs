@@ -182,6 +182,10 @@ save(P('ding'), fadeTail(gen(1.2, (t) => [1, 2.0, 2.76, 5.4].reduce((a, r, k) =>
   }
   save(P('ticktock'), fadeTail(s));
 }
+{ // tick: one crisp game-show clock tick (one per countdown number)
+  const b = reson(2100, 12);
+  save(P('tick'), fadeTail(gen(0.18, (t) => b(t < 0.003 ? rnd() : 0) * 10 * Math.exp(-t * 30) + Math.sin(2 * Math.PI * 1500 * t) * Math.exp(-t * 45) * 0.4)));
+}
 { // calendar page flips
   const s = buf(0.7);
   for (let k = 0; k < 4; k++) {
