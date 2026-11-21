@@ -1,0 +1,42 @@
+[
+ {
+  "text": "My",
+  "startMs": 0.0,
+  "endMs": 140.0
+ },
+ {
+  "text": "enamel's",
+  "startMs": 140.0,
+  "endMs": 600.0
+ },
+ {
+  "text": "thin",
+  "startMs": 600.0,
+  "endMs": 800.0
+ },
+ {
+  "text": "and",
+  "startMs": 800.0,
+  "endMs": 980.0
+ },
+ {
+  "text": "it",
+  "startMs": 980.0,
+  "endMs": 1080.0
+ },
+ {
+  "text": "won't",
+  "startMs": 1080.0,
+  "endMs": 1280.0
+ },
+ {
+  "text": "grow",
+  "startMs": 1280.0,
+  "endMs": 1420.0
+ },
+ {
+  "text": "back.",
+  "startMs": 1420.0,
+  "endMs": 1740.0
+ }
+]

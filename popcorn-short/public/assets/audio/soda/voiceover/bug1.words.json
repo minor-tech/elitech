@@ -1,0 +1,17 @@
+[
+ {
+  "text": "Sugar",
+  "startMs": 0.0,
+  "endMs": 140.0
+ },
+ {
+  "text": "party.",
+  "startMs": 140.0,
+  "endMs": 500.0
+ },
+ {
+  "text": "Burp.",
+  "startMs": 880.0,
+  "endMs": 1160.0
+ }
+]

@@ -22,17 +22,21 @@ const WORDS = dialogue.flatMap((l) => {
     start: l.fromFrame + w.frame,
     end: i < t.words.length - 1 ? l.fromFrame + t.words[i + 1].frame : lineEnd,
   }));
+  // a weak word rides forward until it reaches a real word ("A" + "OR" + "B!" -> "A OR B!")
   const out: typeof raw = [];
+  let carry: (typeof raw)[number] | null = null;
   for (let i = 0; i < raw.length; i++) {
-    const w = raw[i];
-    const bare = w.text.replace(/[^A-Z']/g, '');
-    if (WEAK.has(bare) && i < raw.length - 1) {
-      const n = raw[i + 1];
-      raw[i + 1] = {text: `${w.text} ${n.text}`, start: w.start, end: n.end};
+    const w: (typeof raw)[number] = carry ? {text: `${carry.text} ${raw[i].text}`, start: carry.start, end: raw[i].end} : raw[i];
+    carry = null;
+    const last = raw[i].text.replace(/[^A-Z']/g, '');
+    const endsSentence = /[.!?]$/.test(raw[i].text); // never carry a weak word across the end of a sentence
+    if (WEAK.has(last) && !endsSentence && i < raw.length - 1) {
+      carry = w;
       continue;
     }
     out.push(w);
   }
+  if (carry) out.push(carry);
   return out;
 });
 

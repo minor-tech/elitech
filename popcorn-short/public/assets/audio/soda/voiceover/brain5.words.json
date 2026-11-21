@@ -1,0 +1,37 @@
+[
+ {
+  "text": "Drink",
+  "startMs": 0.0,
+  "endMs": 220.0
+ },
+ {
+  "text": "with",
+  "startMs": 220.0,
+  "endMs": 420.0
+ },
+ {
+  "text": "meals,",
+  "startMs": 420.0,
+  "endMs": 760.0
+ },
+ {
+  "text": "then",
+  "startMs": 1200.0,
+  "endMs": 1380.0
+ },
+ {
+  "text": "rinse",
+  "startMs": 1380.0,
+  "endMs": 1780.0
+ },
+ {
+  "text": "with",
+  "startMs": 1780.0,
+  "endMs": 2020.0
+ },
+ {
+  "text": "water.",
+  "startMs": 2020.0,
+  "endMs": 2280.0
+ }
+]

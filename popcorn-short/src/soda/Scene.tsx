@@ -145,8 +145,8 @@ const Mouth: React.FC<{f: number}> = ({f}) => {
   const salIn = sp(f, BEAT.salivaIn);
   const knock = interpolate(f, [BEAT.sipHit + 4, BEAT.sipHit + 20], [0, 1], {...clamp, easing: Easing.out(Easing.quad)});
   const salOn = f >= BEAT.salivaIn && f < BEAT.brain4[0];
-  const salX = -300 + salIn * 500 - knock * 330; // rests at x≈200 so its hand polishes the chalky spot, not the face
-  const salY = 960 - knock * 120;
+  const salX = -300 + salIn * 500 - knock * 90; // rests at x≈200 (hand on the chalky spot, not the face); knocked to the edge, still in view
+  const salY = 960 + knock * 60;
 
   const shine = f < BEAT.inside + 20 || f >= BEAT.reaction;
   return (

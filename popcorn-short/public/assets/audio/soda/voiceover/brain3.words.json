@@ -1,0 +1,22 @@
+[
+ {
+  "text": "Comment",
+  "startMs": 0.0,
+  "endMs": 240.0
+ },
+ {
+  "text": "A",
+  "startMs": 240.0,
+  "endMs": 540.0
+ },
+ {
+  "text": "or",
+  "startMs": 540.0,
+  "endMs": 800.0
+ },
+ {
+  "text": "B.",
+  "startMs": 800.0,
+  "endMs": 980.0
+ }
+]

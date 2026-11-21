@@ -20,7 +20,7 @@
 |---|---|---|---|
 | 1 | HOOK (outside) | Close-up of a hand opening a soda can: *PSSHHT*, fizz spray | none (sound) |
 | 2 | HOOK (inside) | Hard cut inside: the tooth row, a brown fizzy wave rolls in | **MOLAR:** "Uh oh... here comes the FIZZ!" |
-| 3 | SETUP | Brain HQ: the pH needle swings from 7 down into the red | **BRAIN:** "Acid alert! pH is crashing!" |
+| 3 | SETUP | Brain HQ: the pH needle swings from 7 down into the red | **BRAIN:** "Alert! The pH is crashing!" |
 | 4 | TRIGGER | Sugar Bugs ride the wave, gobble sugar, burp an acid cloud; chalky spots bloom on the enamel | **BUG:** "Sugar party! BURP!" |
 | 5 | | Molar shields itself | **MOLAR:** "Hey! You're burping acid on my armor!" |
 | 6 | | Second bug holds a "DIET" can | **BUG 2:** "Diet soda? Still acid. BURP!" |

@@ -202,9 +202,13 @@ const Erosion: React.FC<{e: number}> = ({e}) => {
       })}
       {worn > 0 && (
         <g opacity={Math.min(1, worn * 1.5)}>
-          {/* enamel worn through at the cusp tips: dentin shows */}
-          <path d={`M ${130 - 30 * worn} ${30 + 6 * (1 - worn)} Q 160 ${18 + 10 * (1 - worn)} ${190 + 10 * worn} ${44}`} stroke={X.dentin} strokeWidth={10 + 16 * worn} fill="none" strokeLinecap="round" />
-          <path d={`M ${210 - 10 * worn} ${44} Q 240 ${18 + 10 * (1 - worn)} ${270 + 30 * worn} ${30 + 6 * (1 - worn)}`} stroke={X.dentin} strokeWidth={10 + 16 * worn} fill="none" strokeLinecap="round" />
+          {/* enamel worn through on the outer cusp slopes (clear of the eyes): yellow dentin shows */}
+          {['M 56 150 C 50 110, 62 74, 96 50', 'M 304 50 C 338 74, 350 110, 344 150'].map((d, i) => (
+            <g key={i}>
+              <path d={d} stroke="#B9935A" strokeWidth={14 + 22 * worn} fill="none" strokeLinecap="round" />
+              <path d={d} stroke={X.dentin} strokeWidth={8 + 20 * worn} fill="none" strokeLinecap="round" />
+            </g>
+          ))}
         </g>
       )}
     </g>

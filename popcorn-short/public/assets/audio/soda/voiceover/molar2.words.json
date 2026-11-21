@@ -1,0 +1,37 @@
+[
+ {
+  "text": "Hey,",
+  "startMs": 0.0,
+  "endMs": 220.0
+ },
+ {
+  "text": "you're",
+  "startMs": 520.0,
+  "endMs": 660.0
+ },
+ {
+  "text": "burping",
+  "startMs": 660.0,
+  "endMs": 920.0
+ },
+ {
+  "text": "acid",
+  "startMs": 920.0,
+  "endMs": 1080.0
+ },
+ {
+  "text": "on",
+  "startMs": 1080.0,
+  "endMs": 1300.0
+ },
+ {
+  "text": "my",
+  "startMs": 1300.0,
+  "endMs": 1440.0
+ },
+ {
+  "text": "armor.",
+  "startMs": 1440.0,
+  "endMs": 1640.0
+ }
+]

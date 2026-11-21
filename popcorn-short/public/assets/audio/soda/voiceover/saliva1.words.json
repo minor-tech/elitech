@@ -1,0 +1,32 @@
+[
+ {
+  "text": "Saliva's",
+  "startMs": 0.0,
+  "endMs": 480.0
+ },
+ {
+  "text": "here.",
+  "startMs": 480.0,
+  "endMs": 660.0
+ },
+ {
+  "text": "I'll",
+  "startMs": 900.0,
+  "endMs": 1060.0
+ },
+ {
+  "text": "patch",
+  "startMs": 1060.0,
+  "endMs": 1180.0
+ },
+ {
+  "text": "you",
+  "startMs": 1180.0,
+  "endMs": 1360.0
+ },
+ {
+  "text": "up.",
+  "startMs": 1360.0,
+  "endMs": 1500.0
+ }
+]

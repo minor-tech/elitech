@@ -1,0 +1,27 @@
+[
+ {
+  "text": "Diet",
+  "startMs": 0.0,
+  "endMs": 200.0
+ },
+ {
+  "text": "soda,",
+  "startMs": 200.0,
+  "endMs": 500.0
+ },
+ {
+  "text": "still",
+  "startMs": 800.0,
+  "endMs": 940.0
+ },
+ {
+  "text": "acid,",
+  "startMs": 940.0,
+  "endMs": 1240.0
+ },
+ {
+  "text": "burp.",
+  "startMs": 1540.0,
+  "endMs": 1840.0
+ }
+]

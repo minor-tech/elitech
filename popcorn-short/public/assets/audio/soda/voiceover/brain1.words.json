@@ -1,0 +1,27 @@
+[
+ {
+  "text": "Alert!",
+  "startMs": 0.0,
+  "endMs": 280.0
+ },
+ {
+  "text": "The",
+  "startMs": 600.0,
+  "endMs": 620.0
+ },
+ {
+  "text": "pH",
+  "startMs": 620.0,
+  "endMs": 800.0
+ },
+ {
+  "text": "is",
+  "startMs": 800.0,
+  "endMs": 1060.0
+ },
+ {
+  "text": "crashing!",
+  "startMs": 1060.0,
+  "endMs": 1360.0
+ }
+]
