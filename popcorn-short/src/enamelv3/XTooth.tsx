@@ -187,6 +187,7 @@ export type XToothProps = {
   frame?: number;
   shade?: boolean; // soft darker edge + crown highlight (needs <ShadeDefs/> once in the SVG)
   erosion?: number; // 0..1 acid wear: chalky spots on the enamel, then yellow dentin showing at the cusps
+  pulp?: boolean; // false = healthy-looking tooth: no pulp/nerve stripes
   apexTilt?: number; // degrees, rotation around the ROOT APEX (how real teeth tip), not the gum line
 };
 
@@ -261,6 +262,7 @@ export const XTooth: React.FC<XToothProps> = ({
   shade = false,
   erosion = 0,
   apexTilt = 0,
+  pulp = true,
 }) => {
   const ax = 200;
   const ay = 320;
@@ -279,10 +281,11 @@ export const XTooth: React.FC<XToothProps> = ({
         ) : (
           <path d="M 304 70 C 326 100, 334 140, 332 170" stroke={X.white} strokeWidth={10} fill="none" strokeLinecap="round" opacity={0.9} />
         )}
-        <path d={PULP} fill={X.pulp} stroke={X.pulpDark} strokeWidth={4} strokeLinejoin="round" />
-        {NERVES.map((n, i) => (
-          <path key={i} d={n.d} stroke={n.c} strokeWidth={4} fill="none" strokeLinecap="round" opacity={0.85} />
-        ))}
+        {pulp && <path d={PULP} fill={X.pulp} stroke={X.pulpDark} strokeWidth={4} strokeLinejoin="round" />}
+        {pulp &&
+          NERVES.map((n, i) => (
+            <path key={i} d={n.d} stroke={n.c} strokeWidth={4} fill="none" strokeLinecap="round" opacity={0.85} />
+          ))}
         {erosion > 0 && <Erosion e={erosion} />}
         {shade && <path d={OUTER} fill="url(#xtShade)" />}
         {pain > 0 && (

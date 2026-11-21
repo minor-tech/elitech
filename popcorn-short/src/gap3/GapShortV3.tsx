@@ -46,6 +46,7 @@ const Captions: React.FC = () => {
   const f = useCurrentFrame();
   const w = WORDS.find((x) => f >= x.start && f < x.end);
   if (!w || f >= B.end) return null;
+  const inBrain = (f >= B.hq1[0] && f < B.fine) || (f >= B.bonkShot && f < B.implantShot) || (f >= B.early[0] && f < B.end);
   const t = f - w.start;
   const pop = w.stress ? interpolate(t, [0, 3, 6], [1.25, 1.06, 1], clamp) : interpolate(t, [0, 2, 4], [0.85, 1.05, 1], clamp);
   const base = w.stress ? 140 : 116;
@@ -57,7 +58,7 @@ const Captions: React.FC = () => {
           position: 'absolute',
           left: 40,
           right: 40,
-          top: 1520,
+          top: inBrain ? 1600 : 1520,
           transform: `translateY(-50%) scale(${pop}) skewX(-6deg)`,
           textAlign: 'center',
           fontFamily: CAPTION_FONT,

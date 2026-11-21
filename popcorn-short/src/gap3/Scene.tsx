@@ -5,7 +5,7 @@ import {Cavity} from '../enamelv3/Backdrop';
 import {ShadeDefs, XTooth} from '../enamelv3/XTooth';
 import type {XEyes} from '../enamelv3/XTooth';
 import {CAPTION_FONT, X} from '../enamelv3/style';
-import {Brain, Forceps, Googly, HardHat, Noodle, PointDown, SoftShadeDefs, Tongue} from '../gap/Props';
+import {Brain, Googly, HardHat, Noodle, PointDown, SoftShadeDefs} from '../gap/Props';
 import type {Face} from '../gap/Props';
 import {L, TOTAL_FRAMES, dialogue} from '../audio/gap3Dialogue';
 import timings from '../audio/gap3Timings.json';
@@ -116,7 +116,7 @@ const LowerBone: React.FC<{dip: number; f: number}> = ({dip, f}) => {
         Array.from({length: 14}).map((_, i) => {
           const t = ((f * 1.6 + i * 23) % 60) / 60;
           const x0 = 440 + random(`mp${i}`) * 200;
-          return <circle key={i} cx={x0 + (random(`mq${i}`) - 0.5) * 120 * t} cy={y + dip * 0.6 - t * 160} r={5 + (i % 3) * 3} fill={X.boneDot} stroke={X.line} strokeWidth={2} opacity={(1 - t) * Math.min(1, dip / 30)} />;
+          return <circle key={i} cx={x0 + (random(`mq${i}`) - 0.5) * 220 * t} cy={y + dip * 0.7 + t * 170} r={5 + (i % 3) * 3} fill={X.boneDot} stroke={X.line} strokeWidth={2} opacity={(1 - t) * Math.min(1, dip / 30)} />;
         })}
     </g>
   );
@@ -171,10 +171,11 @@ const UpperGum: React.FC<{papillae: number[]; teeth: number[]}> = ({papillae, te
 };
 
 /** The running gag: a little sign on the gap that changes with the story. */
-type SignState = 'rent' | 'reno' | 'squatters' | 'leased';
+type SignState = 'rent' | 'reno' | 'vacant' | 'squatters' | 'leased';
 const SIGN_TEXT: Record<SignState, [string, string]> = {
   rent: ['FOR RENT', '#FFFFFF'],
   reno: ['UNDER RENOVATION', X.gold],
+  vacant: ['VACANT', '#FFFFFF'],
   squatters: ['SQUATTERS!', '#FF6B6B'],
   leased: ['LEASED ✓', '#7BE08F'],
 };
@@ -215,6 +216,53 @@ const Implant: React.FC<{y: number; s: number}> = ({y, s}) => (
   </g>
 );
 
+/** Dental forceps: curved beaks, a hinge, thick handles, gloved hand. */
+const Forceps3: React.FC<{tip: [number, number]; open: number; rot?: number}> = ({tip, open, rot = 0}) => {
+  const o = open * 16;
+  const steel = '#C3C8D2';
+  return (
+    <g transform={`translate(${tip[0]} ${tip[1]}) rotate(${-38 + rot})`}>
+      {/* beaks curve in to grip the crown */}
+      <path d={`M 4 ${-10 - o} C 30 ${-46 - o}, 110 ${-50 - o}, 190 -26 L 196 -4 C 120 ${-20 - o}, 50 ${-18 - o}, 22 ${4 - o} Z`} fill={steel} stroke={X.ink} strokeWidth={8} strokeLinejoin="round" />
+      <path d={`M 4 ${10 + o} C 30 ${46 + o}, 110 ${50 + o}, 190 26 L 196 4 C 120 ${20 + o}, 50 ${18 + o}, 22 ${-4 + o} Z`} fill={steel} stroke={X.ink} strokeWidth={8} strokeLinejoin="round" />
+      {/* handles */}
+      <path d="M 200 -18 L 470 -58 L 478 -26 L 206 4 Z" fill={steel} stroke={X.ink} strokeWidth={8} strokeLinejoin="round" />
+      <path d="M 200 18 L 470 58 L 478 26 L 206 -4 Z" fill={steel} stroke={X.ink} strokeWidth={8} strokeLinejoin="round" />
+      <path d="M 230 -12 L 440 -40" stroke="#FFFFFF" strokeWidth={6} strokeLinecap="round" opacity={0.8} />
+      {/* hinge */}
+      <circle cx={200} cy={0} r={30} fill="#9AA1AE" stroke={X.ink} strokeWidth={8} />
+      <circle cx={200} cy={0} r={9} fill={X.ink} />
+      {/* gloved hand */}
+      <ellipse cx={520} cy={0} rx={96} ry={80} fill="#BFE3FF" stroke={X.ink} strokeWidth={8} />
+      <ellipse cx={450} cy={-50} rx={46} ry={24} fill="#BFE3FF" stroke={X.ink} strokeWidth={7} />
+      <ellipse cx={446} cy={50} rx={42} ry={22} fill="#BFE3FF" stroke={X.ink} strokeWidth={7} />
+      <rect x={590} y={-86} width={300} height={172} rx={34} fill="#BFE3FF" stroke={X.ink} strokeWidth={8} />
+    </g>
+  );
+};
+
+/** A short tongue: only the tip and one curve, coming in from the right between the rows. */
+const Tongue3: React.FC<Face & {tip: [number, number]; squish?: number}> = ({tip, squish = 0, ...face}) => {
+  const [tx, t0] = tip;
+  const ty = t0 + squish;
+  const d = `M ${tx + 760} ${ty - 700} C ${tx + 300} ${ty - 700}, ${tx + 40} ${ty - 520}, ${tx - 52} ${ty - 40} C ${tx - 64} ${ty + 10}, ${tx + 30} ${ty + 40}, ${tx + 50} ${ty - 10} C ${tx + 90} ${ty - 400}, ${tx + 330} ${ty - 570}, ${tx + 760} ${ty - 570} Z`;
+  return (
+    <g>
+      <path d={d} fill="#F07A92" stroke={X.line} strokeWidth={8} strokeLinejoin="round" />
+      <path d={d} fill="url(#tongueShade)" />
+      <path d={`M ${tx + 600} ${ty - 670} C ${tx + 300} ${ty - 660}, ${tx + 60} ${ty - 480}, ${tx - 20} ${ty - 120}`} stroke="#FFC2CF" strokeWidth={12} fill="none" strokeLinecap="round" opacity={0.85} />
+      <Googly x={tx + 150} y={ty - 520} s={0.7} {...face} />
+    </g>
+  );
+};
+
+/** Faded outline of where a tooth used to stand, so a slide is measurable. */
+const Ghost: React.FC<{x: number; s: number}> = ({x, s}) => (
+  <g opacity={0.3}>
+    <XTooth {...lowerTooth(x, s)} faceless pulp={false} />
+  </g>
+);
+
 // ======================================================================= the mouth
 const Mouth: React.FC<{f: number}> = ({f}) => {
   // --- Mo, then the gap
@@ -245,7 +293,7 @@ const Mouth: React.FC<{f: number}> = ({f}) => {
   const lefty = sp(f, B.lefty, {mass: 1, damping: 18});
   const righty = sp(f, B.righty, {mass: 1, damping: 18});
   const drop = interpolate(f, [B.upper, B.upper + 50], [0, 120], {...clamp, easing: Easing.inOut(Easing.quad)});
-  const boneDip = interpolate(f, B.bone, [0, 70], {...clamp, easing: Easing.inOut(Easing.quad)});
+  const boneDip = interpolate(f, B.bone, [0, 100], {...clamp, easing: Easing.inOut(Easing.quad)});
   const falling = f >= B.bonkShot; // Upper has left for the brain room
   const upperBack = f >= B.implantShot; // and it's back for the implant shots (still dropped)
 
@@ -278,14 +326,14 @@ const Mouth: React.FC<{f: number}> = ({f}) => {
   const tongueIn = sp(f, f < B.weeks[0] ? B.poke : B.smooth);
   const blocked = f < B.weeks[0];
   const tonguePoke = POKES.reduce((acc, p) => acc + Math.max(0, 1 - Math.abs(f - p - 3) / 5), 0);
-  const tongueTip: [number, number] = blocked ? [700, LG - 60] : [MO_X + 20, LG + 6];
+  const tongueTip: [number, number] = blocked ? [MO_X + 240, LG - 170] : [MO_X + 20, LG + 10];
 
   // --- the sign
   let sign: SignState | null = null;
   let since = 0;
   if (f >= B.pop + 16) [sign, since] = ['rent', B.pop + 16];
   if (f >= B.reno) [sign, since] = ['reno', B.reno];
-  if (f >= B.weeks[1]) sign = null; // healed: the sign is put away until the squatters arrive
+  if (f >= B.weeks[1]) [sign, since] = ['vacant', B.weeks[1]]; // healed and empty: the runner keeps going
   if (f >= B.later[0]) [sign, since] = ['squatters', B.later[0] + 6];
   if (f >= B.lefty && f < B.reveal + 10) sign = null; // keep close-ups clean
   if (f >= B.reveal + 10 && f < B.implant) since = B.reveal + 10;
@@ -301,16 +349,17 @@ const Mouth: React.FC<{f: number}> = ({f}) => {
       <UpperBone />
       {/* depth: a faded back row */}
       <g opacity={0.42}>
-        <XTooth {...upperTooth(360, -30, 1.0)} flip faceless frame={f} />
-        <XTooth {...upperTooth(720, -30, 1.0)} flip faceless frame={f} />
+        <XTooth {...upperTooth(360, -30, 1.0)} flip faceless pulp={false} frame={f} />
+        <XTooth {...upperTooth(720, -30, 1.0)} flip faceless pulp={false} frame={f} />
       </g>
-      <XTooth {...upperTooth(LEFTY_X)} flip faceless shade frame={f} tilt={-2} />
-      <XTooth {...upperTooth(RIGHTY_X)} flip faceless shade frame={f} tilt={2} />
+      <XTooth {...upperTooth(LEFTY_X)} flip faceless shade pulp={false} frame={f} tilt={-2} />
+      <XTooth {...upperTooth(RIGHTY_X)} flip faceless shade pulp={false} frame={f} tilt={2} />
       {(!falling || upperBack) && (
         <XTooth
           {...upperTooth(MO_X, drop)}
           flip
           shade
+          pulp={false}
           frame={f}
           tilt={ju.rot * 0.5 + (quiz ? Math.sin(f * 0.3) * 3 : 0)}
           throb={ju.scale}
@@ -330,14 +379,17 @@ const Mouth: React.FC<{f: number}> = ({f}) => {
         tilt={jl.rot - popRecoil * 10}
         apexTilt={lefty * 13}
         shade
+        pulp={false}
         frame={f}
         {...lf}
         eyes={eyesOf(f, 'lefty', lf.eyes ?? 'open')}
         arms={shocked ? 'panic' : quiz ? 'reach' : 'rest'}
         talk={talkOf(f, 'lefty')}
       />
+      {f >= B.righty && f < B.upper + 4 && <Ghost x={RIGHTY_X} s={S * jr.scale} />}
       <XTooth
         {...lowerTooth(RIGHTY_X, S * jr.scale)}
+        pulp={false}
         left={RIGHTY_X - 200 * S * jr.scale - righty * 75}
         tilt={jr.rot + popRecoil * 10 - righty * 4}
         shade
@@ -362,23 +414,49 @@ const Mouth: React.FC<{f: number}> = ({f}) => {
           talk={talkOf(f, 'mo')}
         />
       )}
+      {f >= B.righty + 4 && f < B.upper + 4 && (() => {
+        const x0 = RIGHTY_X - 200 * S * jr.scale + 30; // where B's left edge started
+        const x1 = x0 - righty * 75;
+        return (
+          <g opacity={Math.min(1, (f - B.righty - 4) / 6)}>
+            <line x1={x0} y1={LG - 470} x2={x0} y2={LG + 20} stroke="#FFFFFF" strokeWidth={8} strokeDasharray="22 16" strokeLinecap="round" />
+            {righty > 0.3 && <path d={`M ${x0 - 8} ${LG - 440} L ${x1 + 10} ${LG - 440}`} stroke="#FFFFFF" strokeWidth={12} strokeLinecap="round" markerEnd="url(#g3arrow)" />}
+          </g>
+        );
+      })()}
       {implantOn && (
         <g>
           <Implant y={implantY} s={1} />
-          <XTooth {...lowerTooth(MO_X, 1.05)} top={implantY - (320 - 0) * 1.05 + 10} faceless shade frame={f} />
+          <XTooth {...lowerTooth(MO_X, 1.05)} top={implantY - 320 * 1.05 + 10} faceless shade pulp={false} frame={f} />
+          <HardHat x={MO_X} y={implantY - 320 * 1.05 + 40} s={2.3} />
         </g>
       )}
       <LowerGum dip={boneDip * 0.8} papillae={moThere ? [360, 722] : []} teeth={moThere ? [LEFTY_X, MO_X, RIGHTY_X] : [LEFTY_X, RIGHTY_X - righty * 75]} />
-      {moThere && f < B.fine && (
-        <g transform={`translate(${MO_X + 10} ${LG - 320 * S - 40}) rotate(-12)`}>
-          <rect x={-110} y={-42} width={220} height={84} rx={30} fill="#BFE6FF" stroke={X.ink} strokeWidth={7} />
-          <path d="M -80 -16 L -40 -16" stroke="#FFFFFF" strokeWidth={10} strokeLinecap="round" />
-        </g>
-      )}
+      {f < B.clampAt + 30 && (() => {
+        const off = interpolate(f, [B.clampAt - 6, B.clampAt + 30], [0, 1], clamp);
+        const x = MO_X + 10 - off * 520;
+        const y = LG - 320 * S + 30 - Math.sin(off * Math.PI) * 420 + off * 200;
+        return (
+          <g>
+            {off === 0 && <ellipse cx={MO_X + 10} cy={LG - 320 * S + 58} rx={88} ry={12} fill="#000" opacity={0.25} />}
+            <g transform={`translate(${x} ${y}) rotate(${-8 + wiggle * 0.6 - off * 400}) scale(0.86)`}>
+              <rect x={-110} y={-42} width={220} height={84} rx={30} fill="#BFE6FF" stroke={X.ink} strokeWidth={7} />
+              <path d="M -80 -16 L -40 -16" stroke="#FFFFFF" strokeWidth={10} strokeLinecap="round" />
+              <path d="M -70 -42 C -60 -80, 60 -80, 70 -42" stroke="#7FB8D8" strokeWidth={10} fill="none" />
+            </g>
+          </g>
+        );
+      })()}
       {/* forceps shadow falls over Mo before the forceps arrive */}
       {f >= B.fine && f < B.clampAt + 4 && <ellipse cx={shadowX + 120} cy={900} rx={220} ry={110} fill="#000" opacity={0.12} transform={`rotate(-30 ${shadowX + 120} 900)`} />}
 
-      {socketOpen && <ellipse cx={MO_X} cy={LG + 26} rx={150} ry={40} fill="#8E2E3E" stroke={X.line} strokeWidth={6} />}
+      {socketOpen && (
+        <g>
+          <ellipse cx={MO_X} cy={LG + 26} rx={150} ry={40} fill="#8E2E3E" stroke={X.line} strokeWidth={6} />
+          <ellipse cx={MO_X} cy={LG + 32} rx={126} ry={28} fill="#4A1520" />
+          <ellipse cx={MO_X} cy={LG + 16} rx={130} ry={16} fill="#2E0B12" opacity={0.55} />
+        </g>
+      )}
       {/* impact burst lines at the socket */}
       {f >= B.pop && f < B.pop + 14 && (
         <g stroke={X.gold} strokeWidth={12} strokeLinecap="round" opacity={1 - (f - B.pop) / 14}>
@@ -422,11 +500,11 @@ const Mouth: React.FC<{f: number}> = ({f}) => {
           <XTooth {...lowerTooth(MO_X)} shade frame={f} {...mo} crack={1} arms="panic" talk={talkOf(f, 'mo')} />
         </g>
       )}
-      {forcepsOn && <Forceps tip={[tip[0] + (flying ? fly * 380 : 0), tip[1]]} open={f < B.clampAt + 2 ? 1 : 0} />}
+      {forcepsOn && <Forceps3 tip={[tip[0] + (flying ? fly * 380 : 0) + wiggle * 2.2, tip[1]]} rot={wiggle * 0.8} open={f < B.clampAt + 2 ? 1 : 0} />}
 
       {tongueOn && (
-        <g transform={`translate(${(1 - tongueIn) * 700} 0)`}>
-          <Tongue tip={tongueTip} squish={tonguePoke * 26} eyes={tonguePoke > 0.3 ? 'squeeze' : blocked && f >= B.dont[0] ? 'wide' : 'open'} mouth={blocked && f >= B.dont[0] ? 'o' : 'grin'} look={[-12, 14]} talk={talkOf(f, 'tongue')} />
+        <g transform={`translate(${(1 - tongueIn) * 900} 0)`}>
+          <Tongue3 tip={tongueTip} squish={tonguePoke * 26} eyes={tonguePoke > 0.3 ? 'squeeze' : blocked && f >= B.dont[0] ? 'wide' : 'open'} mouth={blocked && f >= B.dont[0] ? 'o' : 'grin'} look={[-12, 14]} talk={talkOf(f, 'tongue')} />
         </g>
       )}
       {f >= B.bone[0] && f < B.bone[1] + 4 && (
@@ -506,14 +584,14 @@ const BrainHQ: React.FC<{f: number; hud: Hud; hudSince: number; face: Face; arms
       {red && <path d={`M 540 110 L ${blink ? 120 : 960} -40 L ${blink ? 300 : 780} -40 Z`} fill="#FF4040" opacity={0.25} />}
       <rect x={490} y={100} width={100} height={60} rx={30} fill={red ? (blink ? '#FF3030' : '#B02424') : '#3FA96A'} stroke={X.ink} strokeWidth={7} />
       <HudPanel f={f} state={hud} since={hudSince} />
-      <path d="M -60 1660 L 1140 1660 L 1140 1990 L -60 1990 Z" fill="#E9CFA9" stroke={X.ink} strokeWidth={8} />
-      <rect x={-60} y={1660} width={1200} height={34} fill="#D7B88C" stroke={X.ink} strokeWidth={6} />
+      <path d="M -60 1460 L 1140 1460 L 1140 1990 L -60 1990 Z" fill="#E9CFA9" stroke={X.ink} strokeWidth={8} />
+      <rect x={-60} y={1460} width={1200} height={34} fill="#D7B88C" stroke={X.ink} strokeWidth={6} />
       {/* the lever */}
-      <g transform={`translate(930 1676) rotate(${-35 + lever * 70})`}>
+      <g transform={`translate(930 1476) rotate(${-35 + lever * 70})`}>
         <rect x={-8} y={-150} width={16} height={150} rx={8} fill="#8B8F9A" stroke={X.ink} strokeWidth={6} />
         <circle cx={0} cy={-156} r={26} fill={X.red} stroke={X.ink} strokeWidth={6} />
       </g>
-      <Brain x={520} y={1340} s={1.38} frame={f} armsUp={armsUp} {...face} talk={talkOf(f, 'brain')} />
+      <Brain x={520} y={1170} s={1.15} frame={f} armsUp={armsUp} {...face} talk={talkOf(f, 'brain')} />
       {children}
     </g>
   );
@@ -527,8 +605,8 @@ const Big: React.FC<{text: string; x: number; y: number; size: number; color: st
     </text>
   );
 const LABEL_MIN = 40;
-const Label: React.FC<{text: string; x: number; y: number; from: number; to: number; f: number}> = ({text, x, y, from, to, f}) => {
-  const end = Math.max(to, from + LABEL_MIN + 8);
+const Label: React.FC<{text: string; x: number; y: number; from: number; to: number; f: number; hard?: boolean}> = ({text, x, y, from, to, f, hard}) => {
+  const end = hard ? to : Math.max(to, from + LABEL_MIN + 8);
   if (f < from || f > end) return null;
   const s = Math.min(sp(f, from), interpolate(f, [end - 8, end], [1, 0], clamp));
   return (
@@ -584,9 +662,9 @@ const Quiz: React.FC<{f: number}> = ({f}) => {
       <Big text="WHO MOVES IN?" x={540} y={250} size={112} color="#FFFFFF" s={sp(f, B.quiz[0])} />
       {badge(150, 790, 'A', 4)}
       {badge(935, 790, 'B', 8)}
-      {badge(905, 470, 'C', 12)}
+      {badge(540, 660, 'C', 12)}
       {n !== null && (
-        <g transform={`translate(540 1060) scale(${0.8 + 0.2 * sp(f, last)})`}>
+        <g transform={`translate(540 120) scale(${0.8 + 0.2 * sp(f, last)})`}>
           <circle r={70} fill="#FFFFFF" stroke={X.ink} strokeWidth={10} />
           <text y={8} textAnchor="middle" dominantBaseline="middle" fontFamily={CAPTION_FONT} fontSize={96} fill={X.red}>
             {n}
@@ -603,7 +681,7 @@ const EndCard: React.FC<{f: number}> = ({f}) => {
   const words = ['TEETH', "DON'T", 'GROW.'];
   return (
     <g>
-      <rect x={-60} y={-60} width={1200} height={2040} fill="#000" opacity={0.6 * Math.min(1, (f - a) / 6)} />
+      <rect x={-60} y={-60} width={1200} height={2040} fill="#000" opacity={0.4 * Math.min(1, (f - a) / 6)} />
       {words.map((w, i) => (
         <Big key={w} text={w} x={[215, 535, 860][i]} y={640} size={100} color="#FFFFFF" s={sp(f, a + i * 6, {mass: 1, damping: 9})} />
       ))}
@@ -634,8 +712,8 @@ const CAM_KEYS: [number, Cam, boolean][] = [
   [B.later[0], GAP_CAM, false],
   [B.lefty, camOn(LEFTY_X + 60, LEFTY_MOUTH, 1.8), false], // pan to A
   [B.righty - 10, camOn(LEFTY_X + 60, LEFTY_MOUTH, 1.85), false],
-  [B.righty, camOn(RIGHTY_X - 75, MO_MOUTH, 1.75), false], // pan to B
-  [B.upper - 10, camOn(RIGHTY_X - 75, MO_MOUTH, 1.8), false],
+  [B.righty, camOn(RIGHTY_X - 190, MO_MOUTH, 1.35), false], // pan to B, gap edge in shot
+  [B.upper - 10, camOn(RIGHTY_X - 190, MO_MOUTH, 1.38), false],
   [B.upper, camOn(MO_X, upperMouth(60), 1.7), false], // tilt up to C
   [B.reveal, camOn(MO_X, upperMouth(120), 1.75), false],
   [B.reveal + 14, GAP_CAM, false], // the reveal: framing #2
@@ -677,12 +755,20 @@ export const Gap3Scene: React.FC = () => {
   const stars = bonked
     ? Array.from({length: 5}).map((_, i) => {
         const a = f * 0.18 + (i / 5) * Math.PI * 2;
-        return <path key={i} transform={`translate(${520 + Math.cos(a) * 200} ${1000 + Math.sin(a) * 50}) scale(0.7)`} d="M 0 -30 L 9 -9 L 30 -6 L 13 9 L 18 30 L 0 18 L -18 30 L -13 9 L -30 -6 L -9 -9 Z" fill={X.gold} stroke={X.ink} strokeWidth={5} />;
+        return <path key={i} transform={`translate(${520 + Math.cos(a) * 200} ${900 + Math.sin(a) * 50}) scale(0.7)`} d="M 0 -30 L 9 -9 L 30 -6 L 13 9 L 18 30 L 0 18 L -18 30 L -13 9 L -30 -6 L -9 -9 Z" fill={X.gold} stroke={X.ink} strokeWidth={5} />;
       })
     : null;
 
+  // a 5-frame whip into each Brain-room shot instead of a soft cut
+  const whipAt = [B.hq1[0], B.bonkShot, B.early[0]].find((w) => f >= w && f < w + 5);
+  const whip = whipAt === undefined ? 0 : (1 - (f - whipAt) / 5) ** 2 * 900;
   return (
-    <g transform={`translate(${sx} ${sy})`}>
+    <g transform={`translate(${sx + whip} ${sy})`}>
+      <defs>
+        <marker id="g3arrow" viewBox="0 0 10 10" refX={5} refY={5} markerWidth={4} markerHeight={4} orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#FFFFFF" stroke={X.ink} strokeWidth={1} />
+        </marker>
+      </defs>
       <ShadeDefs />
       <SoftShadeDefs />
       {inHQ1 && <BrainHQ f={f} hud="pain" hudSince={B.hq1[0]} face={{eyes: 'wide', brows: 'angry', mouth: 'yell', look: [20, 10]}} armsUp={false} lever={interpolate(f, [B.lever, B.lever + 6], [0, 1], clamp)} />}
@@ -696,10 +782,10 @@ export const Gap3Scene: React.FC = () => {
         >
           {/* C lands on the brain's head and stays there */}
           <g transform={`translate(0 ${interpolate(fallT, [0, 1], [-1200, 0])})`}>
-            <XTooth left={520 - 200 * 0.9} top={1035 - 610 * 0.9} scale={0.9} flip shade frame={f} eyes={bonked ? 'wide' : 'open'} brows="worried" mouth="o" look={[0, 0]} squash={bonked ? squash(f, B.bonk, 0.2) : [1, 1]} />
+            <XTooth left={520 - 200 * 0.9} top={935 - 610 * 0.9} pulp={false} scale={0.9} flip shade frame={f} eyes={bonked ? 'wide' : 'open'} brows="worried" mouth="o" look={[0, 0]} squash={bonked ? squash(f, B.bonk, 0.2) : [1, 1]} />
           </g>
           {stars}
-          {bonked && f < B.bonk + 40 && <Big text="BONK!" x={810} y={820} size={130} color={X.gold} s={sp(f, B.bonk, {mass: 1, damping: 8})} rot={-12} />}
+          {bonked && f < B.bonk + 40 && <Big text="BONK!" x={810} y={740} size={130} color={X.gold} s={sp(f, B.bonk, {mass: 1, damping: 8})} rot={-12} />}
         </BrainHQ>
       )}
       {inHQ2 && <BrainHQ f={f} hud="fixed" hudSince={B.early[0]} face={{eyes: 'open', brows: 'none', mouth: 'smile', look: [0, 4]}} armsUp={false} />}
@@ -711,18 +797,25 @@ export const Gap3Scene: React.FC = () => {
           </g>
           <Label text="Molar" x={540} y={250} from={B.scream[0] + 4} to={B.scream[1]} f={f} />
           <Label text="Blood clot" x={540} y={1330} from={B.clot + 6} to={L('clot').to} f={f} />
-          <Label text="Tipping" x={540} y={1330} from={B.lefty} to={B.righty} f={f} />
-          <Label text="Drifting" x={540} y={1330} from={B.righty} to={B.upper} f={f} />
+          <Label text="Tipping" x={540} y={1330} from={B.lefty} to={B.righty} f={f} hard />
+          <Label text="Drifting" x={540} y={1330} from={B.righty} to={B.upper} f={f} hard />
           <Label text="Over-erupting" x={640} y={1330} from={B.upper + 8} to={B.reveal} f={f} />
           <Label text="Jaw bone" x={540} y={1300} from={B.bone[0]} to={B.bone[1]} f={f} />
-          <Label text="Implant" x={540} y={250} from={B.implant + 6} to={L('implant').to} f={f} />
+          <Label text="Implant" x={250} y={820} from={B.implant + 6} to={L('implant').to + 20} f={f} />
+          {f >= B.implant + 10 && f < L('implant').to + 20 && (
+            <path d="M 330 860 Q 440 900 500 990" stroke="#FFFFFF" strokeWidth={10} fill="none" strokeLinecap="round" markerEnd="url(#g3arrow)" opacity={Math.min(1, (f - B.implant - 10) / 6)} />
+          )}
           {/* the dry-socket lesson, as a sticker */}
           {f >= B.dont[0] && f < B.dont[1] + 30 && (
             <g opacity={interpolate(f, [B.dont[1] + 18, B.dont[1] + 30], [1, 0], clamp)}>
-              <g transform={`translate(540 300) scale(${sp(f, B.dont[0])}) rotate(-3)`}>
-                <rect x={-460} y={-100} width={920} height={200} rx={30} fill="#FFFFFF" stroke={X.ink} strokeWidth={9} />
-                <text x={0} y={-30} textAnchor="middle" dominantBaseline="middle" fontFamily={CAPTION_FONT} fontSize={58} fill={X.ink}>
-                  POKE THE CLOT &gt; DRY SOCKET
+              <g transform={`translate(540 1200) scale(${sp(f, B.dont[0])}) rotate(-3)`}>
+                <rect x={-480} y={-100} width={960} height={200} rx={30} fill="#FFFFFF" stroke={X.ink} strokeWidth={9} />
+                <text x={-56} y={-30} textAnchor="end" dominantBaseline="middle" fontFamily={CAPTION_FONT} fontSize={54} fill={X.ink}>
+                  POKE THE CLOT
+                </text>
+                <path d="M -40 -30 L 30 -30 M 10 -48 L 34 -30 L 10 -12" stroke={X.red} strokeWidth={10} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                <text x={56} y={-30} textAnchor="start" dominantBaseline="middle" fontFamily={CAPTION_FONT} fontSize={54} fill={X.ink}>
+                  DRY SOCKET
                 </text>
                 <text x={0} y={44} textAnchor="middle" dominantBaseline="middle" fontFamily={CAPTION_FONT} fontSize={74} fill={X.red}>
                   = OUCH!!!
@@ -744,6 +837,8 @@ export const Gap3Scene: React.FC = () => {
           <EndCard f={f} />
         </g>
       )}
+      {whip > 0 &&
+        Array.from({length: 7}).map((_, i) => <rect key={i} x={-whip - 200} y={150 + i * 260} width={whip + 400} height={14} fill="#FFFFFF" opacity={0.5} />)}
       {flash && <rect x={-100} y={-100} width={1300} height={2200} fill="#FFFFFF" />}
     </g>
   );
