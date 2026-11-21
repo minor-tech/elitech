@@ -586,7 +586,7 @@ const Quiz: React.FC<{f: number}> = ({f}) => {
       {badge(935, 790, 'B', 8)}
       {badge(905, 470, 'C', 12)}
       {n !== null && (
-        <g transform={`translate(540 400) scale(${0.8 + 0.2 * sp(f, last)})`}>
+        <g transform={`translate(540 1060) scale(${0.8 + 0.2 * sp(f, last)})`}>
           <circle r={70} fill="#FFFFFF" stroke={X.ink} strokeWidth={10} />
           <text y={8} textAnchor="middle" dominantBaseline="middle" fontFamily={CAPTION_FONT} fontSize={96} fill={X.red}>
             {n}
@@ -713,7 +713,7 @@ export const Gap3Scene: React.FC = () => {
           <Label text="Blood clot" x={540} y={1330} from={B.clot + 6} to={L('clot').to} f={f} />
           <Label text="Tipping" x={540} y={1330} from={B.lefty} to={B.righty} f={f} />
           <Label text="Drifting" x={540} y={1330} from={B.righty} to={B.upper} f={f} />
-          <Label text="Over-erupting" x={540} y={1330} from={B.upper + 8} to={B.reveal} f={f} />
+          <Label text="Over-erupting" x={640} y={1330} from={B.upper + 8} to={B.reveal} f={f} />
           <Label text="Jaw bone" x={540} y={1300} from={B.bone[0]} to={B.bone[1]} f={f} />
           <Label text="Implant" x={540} y={250} from={B.implant + 6} to={L('implant').to} f={f} />
           {/* the dry-socket lesson, as a sticker */}

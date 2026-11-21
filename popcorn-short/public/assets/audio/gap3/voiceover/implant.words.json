@@ -1,0 +1,32 @@
+[
+ {
+  "text": "The",
+  "startMs": 0.0,
+  "endMs": 80.0
+ },
+ {
+  "text": "implant's",
+  "startMs": 80.0,
+  "endMs": 580.0
+ },
+ {
+  "text": "in,",
+  "startMs": 580.0,
+  "endMs": 740.0
+ },
+ {
+  "text": "no",
+  "startMs": 940.0,
+  "endMs": 1040.0
+ },
+ {
+  "text": "more",
+  "startMs": 1040.0,
+  "endMs": 1200.0
+ },
+ {
+  "text": "moving.",
+  "startMs": 1200.0,
+  "endMs": 1440.0
+ }
+]

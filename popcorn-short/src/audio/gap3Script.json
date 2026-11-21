@@ -19,7 +19,7 @@
     {"id": "all", "character": "brain", "pause": 10, "text": "Answer? All of them!"},
     {"id": "melting", "character": "bone", "pause": 12, "text": "No root. No workout. I'm melting."},
     {"id": "ow", "character": "brain", "pause": 40, "text": "OW! Replace it early!"},
-    {"id": "implant", "character": "brain", "pause": 50, "text": "Implant's in. Movement's over."},
+    {"id": "implant", "character": "brain", "pause": 50, "text": "The implant's in. No more moving."},
     {"id": "stay", "character": "lefty", "pause": 8, "text": "...we stay like this?"},
     {"id": "early", "character": "brain", "pause": 6, "text": "Yep. That's why early matters."}
   ]

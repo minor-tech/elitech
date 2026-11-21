@@ -1,0 +1,22 @@
+[
+ {
+  "text": "answer",
+  "startMs": 0.0,
+  "endMs": 280.0
+ },
+ {
+  "text": "all",
+  "startMs": 280.0,
+  "endMs": 660.0
+ },
+ {
+  "text": "of",
+  "startMs": 660.0,
+  "endMs": 800.0
+ },
+ {
+  "text": "them.",
+  "startMs": 800.0,
+  "endMs": 960.0
+ }
+]

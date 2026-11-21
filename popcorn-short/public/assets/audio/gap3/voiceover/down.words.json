@@ -1,0 +1,17 @@
+[
+ {
+  "text": "I'm",
+  "startMs": 0.0,
+  "endMs": 60.0
+ },
+ {
+  "text": "coming",
+  "startMs": 60.0,
+  "endMs": 300.0
+ },
+ {
+  "text": "down.",
+  "startMs": 300.0,
+  "endMs": 520.0
+ }
+]

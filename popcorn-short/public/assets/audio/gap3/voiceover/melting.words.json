@@ -1,0 +1,32 @@
+[
+ {
+  "text": "No",
+  "startMs": 0.0,
+  "endMs": 120.0
+ },
+ {
+  "text": "root,",
+  "startMs": 120.0,
+  "endMs": 300.0
+ },
+ {
+  "text": "no",
+  "startMs": 580.0,
+  "endMs": 700.0
+ },
+ {
+  "text": "workout,",
+  "startMs": 700.0,
+  "endMs": 980.0
+ },
+ {
+  "text": "I'm",
+  "startMs": 1320.0,
+  "endMs": 1460.0
+ },
+ {
+  "text": "melting.",
+  "startMs": 1460.0,
+  "endMs": 1680.0
+ }
+]

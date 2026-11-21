@@ -1,0 +1,22 @@
+[
+ {
+  "text": "We",
+  "startMs": 0.0,
+  "endMs": 80.0
+ },
+ {
+  "text": "stay",
+  "startMs": 80.0,
+  "endMs": 200.0
+ },
+ {
+  "text": "like",
+  "startMs": 200.0,
+  "endMs": 420.0
+ },
+ {
+  "text": "this.",
+  "startMs": 420.0,
+  "endMs": 600.0
+ }
+]
