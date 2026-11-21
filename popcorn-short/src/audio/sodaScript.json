@@ -1,0 +1,19 @@
+{
+  "_doc": "Soda short script. pause = frames before the line (action / beats). Frames in sodaDialogue.ts are generated from this + real voice lengths by scripts/layout-dialogue.mjs.",
+  "tail": 125,
+  "lines": [
+    {"id": "molar1", "character": "mo", "pause": 40, "text": "Uh oh... here comes the FIZZ!"},
+    {"id": "brain1", "character": "brain", "pause": 6, "text": "Acid alert! pH is crashing!"},
+    {"id": "bug1", "character": "bug", "pause": 14, "text": "Sugar party! BURP!"},
+    {"id": "molar2", "character": "mo", "pause": 6, "text": "Hey! You're burping acid on my armor!"},
+    {"id": "bug2", "character": "bug", "pause": 6, "text": "Diet soda? Still acid. BURP!"},
+    {"id": "brain2", "character": "brain", "pause": 10, "text": "What's worse for teeth?"},
+    {"id": "brain3", "character": "brain", "pause": 6, "text": "Comment A or B!"},
+    {"id": "saliva1", "character": "saliva", "pause": 92, "text": "Saliva's here! I'll patch you up!"},
+    {"id": "saliva2", "character": "saliva", "pause": 22, "text": "Another sip?! I can't keep up!"},
+    {"id": "brain4", "character": "brain", "pause": 8, "text": "It's A! The acid never stops!"},
+    {"id": "molar3", "character": "mo", "pause": 8, "text": "My enamel's thin... and it won't grow back!"},
+    {"id": "brain5", "character": "brain", "pause": 8, "text": "Drink with meals. Then rinse with water!"},
+    {"id": "bug3", "character": "bug", "pause": 20, "text": "Water?! Noooo... burp?"}
+  ]
+}

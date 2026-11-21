@@ -1,0 +1,32 @@
+[
+ {
+  "text": "Uh",
+  "startMs": 0.0,
+  "endMs": 120.0
+ },
+ {
+  "text": "oh,",
+  "startMs": 120.0,
+  "endMs": 260.0
+ },
+ {
+  "text": "here",
+  "startMs": 500.0,
+  "endMs": 600.0
+ },
+ {
+  "text": "comes",
+  "startMs": 600.0,
+  "endMs": 780.0
+ },
+ {
+  "text": "the",
+  "startMs": 780.0,
+  "endMs": 960.0
+ },
+ {
+  "text": "fizz.",
+  "startMs": 960.0,
+  "endMs": 1180.0
+ }
+]

@@ -179,6 +179,36 @@ export type XToothProps = {
   flip?: boolean; // upper-jaw tooth
   frame?: number;
   shade?: boolean; // soft darker edge + crown highlight (needs <ShadeDefs/> once in the SVG)
+  erosion?: number; // 0..1 acid wear: chalky spots on the enamel, then yellow dentin showing at the cusps
+};
+
+// Acid wear (erosion): chalky softened spots first, then the enamel is worn through at the cusp tips.
+const CHALK = [
+  [96, 92, 18, 12],
+  [140, 58, 14, 9],
+  [262, 52, 15, 10],
+  [318, 96, 17, 12],
+  [76, 160, 12, 16],
+  [334, 170, 11, 15],
+];
+const Erosion: React.FC<{e: number}> = ({e}) => {
+  const chalk = Math.min(1, e / 0.45);
+  const worn = Math.max(0, (e - 0.5) / 0.5);
+  return (
+    <g>
+      {CHALK.map(([x, y, rx, ry], i) => {
+        const on = Math.max(0, Math.min(1, chalk * 1.4 - i * 0.12));
+        return on > 0 ? <ellipse key={i} cx={x} cy={y} rx={rx * (0.6 + on * 0.6)} ry={ry * (0.6 + on * 0.6)} fill="#F1ECE0" stroke="#CFC5B2" strokeWidth={3} strokeDasharray="4 4" opacity={0.95 * on} /> : null;
+      })}
+      {worn > 0 && (
+        <g opacity={Math.min(1, worn * 1.5)}>
+          {/* enamel worn through at the cusp tips: dentin shows */}
+          <path d={`M ${130 - 30 * worn} ${30 + 6 * (1 - worn)} Q 160 ${18 + 10 * (1 - worn)} ${190 + 10 * worn} ${44}`} stroke={X.dentin} strokeWidth={10 + 16 * worn} fill="none" strokeLinecap="round" />
+          <path d={`M ${210 - 10 * worn} ${44} Q 240 ${18 + 10 * (1 - worn)} ${270 + 30 * worn} ${30 + 6 * (1 - worn)}`} stroke={X.dentin} strokeWidth={10 + 16 * worn} fill="none" strokeLinecap="round" />
+        </g>
+      )}
+    </g>
+  );
 };
 
 /** Gradients used by `shade` - render once per SVG. */
@@ -217,6 +247,7 @@ export const XTooth: React.FC<XToothProps> = ({
   flip = false,
   frame = 0,
   shade = false,
+  erosion = 0,
 }) => {
   const ax = 200;
   const ay = 320;
@@ -238,6 +269,7 @@ export const XTooth: React.FC<XToothProps> = ({
         {NERVES.map((n, i) => (
           <path key={i} d={n.d} stroke={n.c} strokeWidth={4} fill="none" strokeLinecap="round" opacity={0.85} />
         ))}
+        {erosion > 0 && <Erosion e={erosion} />}
         {shade && <path d={OUTER} fill="url(#xtShade)" />}
         {pain > 0 && (
           <g>

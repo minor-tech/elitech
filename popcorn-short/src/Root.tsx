@@ -4,6 +4,7 @@ import {EnamelShort} from './enamel/EnamelShort';
 import {EnamelShortV2} from './enamelv2/EnamelShortV2';
 import {EnamelShortV3} from './enamelv3/EnamelShortV3';
 import {GAP_FRAMES, GapShort} from './gap/GapShort';
+import {SODA_FRAMES, SodaShort} from './soda/SodaShort';
 import {FPS, HEIGHT, TOTAL_FRAMES, WIDTH} from './theme';
 
 export const RemotionRoot: React.FC = () => (
@@ -18,5 +19,7 @@ export const RemotionRoot: React.FC = () => (
     <Composition id="EnamelShortV3" component={EnamelShortV3} durationInFrames={TOTAL_FRAMES} fps={FPS} width={WIDTH} height={HEIGHT} />
     {/* Video #3: "The Gap" - extraction, the neighbours move in (45 s) */}
     <Composition id="GapShort" component={GapShort} durationInFrames={GAP_FRAMES} fps={FPS} width={WIDTH} height={HEIGHT} />
+    {/* Video #4: "Your Teeth When You Sip Soda All Day" */}
+    <Composition id="SodaShort" component={SodaShort} durationInFrames={SODA_FRAMES} fps={FPS} width={WIDTH} height={HEIGHT} />
   </>
 );
