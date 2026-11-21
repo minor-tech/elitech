@@ -1,0 +1,27 @@
+[
+ {
+  "text": "I'm",
+  "startMs": 0.0,
+  "endMs": 140.0
+ },
+ {
+  "text": "fine.",
+  "startMs": 140.0,
+  "endMs": 400.0
+ },
+ {
+  "text": "It's",
+  "startMs": 880.0,
+  "endMs": 980.0
+ },
+ {
+  "text": "just",
+  "startMs": 980.0,
+  "endMs": 1080.0
+ },
+ {
+  "text": "a.",
+  "startMs": 1080.0,
+  "endMs": 1320.0
+ }
+]

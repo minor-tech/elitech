@@ -1,0 +1,22 @@
+[
+ {
+  "text": "don't",
+  "startMs": 0.0,
+  "endMs": 400.0
+ },
+ {
+  "text": "touch",
+  "startMs": 400.0,
+  "endMs": 840.0
+ },
+ {
+  "text": "the",
+  "startMs": 840.0,
+  "endMs": 1460.0
+ },
+ {
+  "text": "clot.",
+  "startMs": 1460.0,
+  "endMs": 2060.0
+ }
+]

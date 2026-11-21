@@ -1,0 +1,26 @@
+{
+  "_doc": "The Gap v3. pause = frames of action before the line. Beats in src/gap3/Scene.tsx are derived from these lines.",
+  "tail": 104,
+  "lines": [
+    {"id": "scream", "character": "mo", "pause": 2, "text": "MY CRACK! MY CRACK!"},
+    {"id": "forceps", "character": "brain", "pause": 4, "text": "Molar's down. Get the forceps!"},
+    {"id": "fine", "character": "mo", "pause": 6, "text": "I'm FINE! It's just a..."},
+    {"id": "fiiine", "character": "mo", "pause": 46, "text": "I was FINE!!"},
+    {"id": "clot", "character": "gums", "pause": 16, "text": "Clot first. Gum later."},
+    {"id": "poke", "character": "tongue", "pause": 8, "text": "Ooh... can I poke it?"},
+    {"id": "dont", "character": "gums", "pause": 2, "text": "Don't. Touch. The. Clot."},
+    {"id": "smooth", "character": "tongue", "pause": 26, "text": "Ooh. Smooth... poking it."},
+    {"id": "stop", "character": "brain", "pause": 4, "text": "Stop poking!"},
+    {"id": "cant", "character": "tongue", "pause": 4, "text": "Can't. Won't."},
+    {"id": "quiz", "character": "brain", "pause": 10, "text": "Gap's open. Who moves in?"},
+    {"id": "leaning", "character": "lefty", "pause": 70, "text": "Just... leaning in."},
+    {"id": "sliding", "character": "righty", "pause": 8, "text": "Sliding over."},
+    {"id": "down", "character": "upper", "pause": 8, "text": "I'm COMING DOWN!"},
+    {"id": "all", "character": "brain", "pause": 10, "text": "Answer? All of them!"},
+    {"id": "melting", "character": "bone", "pause": 12, "text": "No root. No workout. I'm melting."},
+    {"id": "ow", "character": "brain", "pause": 40, "text": "OW! Replace it early!"},
+    {"id": "implant", "character": "brain", "pause": 50, "text": "Implant's in. Movement's over."},
+    {"id": "stay", "character": "lefty", "pause": 8, "text": "...we stay like this?"},
+    {"id": "early", "character": "brain", "pause": 6, "text": "Yep. That's why early matters."}
+  ]
+}

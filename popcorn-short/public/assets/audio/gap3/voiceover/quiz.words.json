@@ -1,0 +1,27 @@
+[
+ {
+  "text": "Gaps",
+  "startMs": 0.0,
+  "endMs": 240.0
+ },
+ {
+  "text": "open.",
+  "startMs": 240.0,
+  "endMs": 460.0
+ },
+ {
+  "text": "Who",
+  "startMs": 940.0,
+  "endMs": 1020.0
+ },
+ {
+  "text": "moves",
+  "startMs": 1020.0,
+  "endMs": 1200.0
+ },
+ {
+  "text": "in?",
+  "startMs": 1200.0,
+  "endMs": 1400.0
+ }
+]

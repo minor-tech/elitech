@@ -4,7 +4,7 @@ import {X} from '../enamelv3/style';
 const INK = X.ink;
 
 // ---------- shared googly face (same look as the teeth) ------------------------
-export type Face = {eyes?: 'open' | 'wide' | 'closed' | 'half' | 'squeeze'; mouth?: 'smile' | 'grin' | 'o' | 'frown' | 'flat' | 'yell'; look?: [number, number]; talk?: number; brows?: 'none' | 'worried' | 'angry' | 'proud'};
+export type Face = {eyes?: 'open' | 'wide' | 'closed' | 'half' | 'squeeze' | 'dizzy'; mouth?: 'smile' | 'grin' | 'o' | 'frown' | 'flat' | 'yell'; look?: [number, number]; talk?: number; brows?: 'none' | 'worried' | 'angry' | 'proud'};
 
 export const Googly: React.FC<Face & {x: number; y: number; s?: number; gap?: number; mouthY?: number}> = ({
   x,
@@ -19,6 +19,13 @@ export const Googly: React.FC<Face & {x: number; y: number; s?: number; gap?: nu
   brows = 'none',
 }) => {
   const eye = (cx: number, side: -1 | 1) => {
+    if (eyes === 'dizzy')
+      return (
+        <g>
+          <ellipse cx={cx} cy={0} rx={36} ry={46} fill={X.white} stroke={INK} strokeWidth={6} />
+          <path d={`M ${cx} 2 m -4 0 a 4 4 0 1 1 8 0 a 9 9 0 1 1 -17 0 a 14 14 0 1 1 27 0 a 19 19 0 1 1 -36 0`} stroke={INK} strokeWidth={5} fill="none" strokeLinecap="round" />
+        </g>
+      );
     if (eyes === 'closed') return <path d={`M ${cx - 30} ${8} Q ${cx} ${30} ${cx + 30} ${8}`} stroke={INK} strokeWidth={7} fill="none" strokeLinecap="round" />;
     if (eyes === 'squeeze')
       return (

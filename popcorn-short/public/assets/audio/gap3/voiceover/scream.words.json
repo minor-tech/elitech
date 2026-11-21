@@ -1,0 +1,22 @@
+[
+ {
+  "text": "My",
+  "startMs": 0.0,
+  "endMs": 200.0
+ },
+ {
+  "text": "crack,",
+  "startMs": 200.0,
+  "endMs": 560.0
+ },
+ {
+  "text": "my",
+  "startMs": 900.0,
+  "endMs": 1120.0
+ },
+ {
+  "text": "crack.",
+  "startMs": 1120.0,
+  "endMs": 1540.0
+ }
+]

@@ -1,7 +1,7 @@
 import React from 'react';
 import {X} from './style';
 
-export type XEyes = 'open' | 'wide' | 'closed' | 'half' | 'squeeze';
+export type XEyes = 'open' | 'wide' | 'closed' | 'half' | 'squeeze' | 'dizzy';
 export type XBrows = 'none' | 'proud' | 'worried' | 'angry' | 'skeptical';
 export type XMouth = 'smile' | 'grin' | 'o' | 'frown' | 'flat' | 'wavy' | 'grit' | 'smirk' | 'yell';
 export type XArms = 'none' | 'rest' | 'flex' | 'panic' | 'reach';
@@ -40,6 +40,13 @@ const EYE_Y = 70;
 
 const Eye: React.FC<{cx: number; kind: XEyes; look: [number, number]; side: -1 | 1}> = ({cx, kind, look, side}) => {
   const sw = 6;
+  if (kind === 'dizzy')
+    return (
+      <g>
+        <ellipse cx={cx} cy={EYE_Y} rx={36} ry={46} fill={X.white} stroke={X.ink} strokeWidth={sw} />
+        <path d={`M ${cx} ${EYE_Y + 2} m -4 0 a 4 4 0 1 1 8 0 a 9 9 0 1 1 -17 0 a 14 14 0 1 1 27 0 a 19 19 0 1 1 -36 0`} stroke={X.ink} strokeWidth={5} fill="none" strokeLinecap="round" />
+      </g>
+    );
   if (kind === 'closed')
     return <path d={`M ${cx - 30} ${EYE_Y + 8} Q ${cx} ${EYE_Y + 30} ${cx + 30} ${EYE_Y + 8}`} stroke={X.ink} strokeWidth={sw + 1} fill="none" strokeLinecap="round" />;
   if (kind === 'squeeze')
@@ -180,6 +187,7 @@ export type XToothProps = {
   frame?: number;
   shade?: boolean; // soft darker edge + crown highlight (needs <ShadeDefs/> once in the SVG)
   erosion?: number; // 0..1 acid wear: chalky spots on the enamel, then yellow dentin showing at the cusps
+  apexTilt?: number; // degrees, rotation around the ROOT APEX (how real teeth tip), not the gum line
 };
 
 // Acid wear (erosion): chalky softened spots first, then the enamel is worn through at the cusp tips.
@@ -252,12 +260,14 @@ export const XTooth: React.FC<XToothProps> = ({
   frame = 0,
   shade = false,
   erosion = 0,
+  apexTilt = 0,
 }) => {
   const ax = 200;
   const ay = 320;
   const inner = `translate(${ax} ${ay}) rotate(${tilt + (flip ? 180 : 0)}) scale(${squash[0] * throb} ${squash[1] * throb}) translate(${-ax} ${-ay})`;
   return (
     <g transform={`translate(${left} ${top}) scale(${scale})`}>
+      <g transform={`rotate(${apexTilt} 200 465)`}>
       <g transform={inner}>
         {!faceless && !flip && <Arms kind={arms} frame={frame} />}
         {/* cross-section layers */}
@@ -324,6 +334,7 @@ export const XTooth: React.FC<XToothProps> = ({
             />
           );
         })}
+      </g>
       </g>
     </g>
   );

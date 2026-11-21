@@ -1,0 +1,22 @@
+[
+ {
+  "text": "Clot",
+  "startMs": 0.0,
+  "endMs": 200.0
+ },
+ {
+  "text": "first,",
+  "startMs": 200.0,
+  "endMs": 520.0
+ },
+ {
+  "text": "gun",
+  "startMs": 880.0,
+  "endMs": 1000.0
+ },
+ {
+  "text": "later.",
+  "startMs": 1000.0,
+  "endMs": 1300.0
+ }
+]
