@@ -141,3 +141,27 @@ THUMBNAIL:    face ___ + arrow at ___ + text "___"
 - *Your Teeth When You Skip Flossing for a Year*: the plaque villain moves in, the gums get evicted.
 - *Your Teeth When You Drink Soda Every Day*: an acid "rain" gauge, and enamel's armour dissolving over 3 escalations.
 - *Your Mouth When You Grind Your Teeth at Night*: the jaw muscle as a gym bro, flattened molars, Brain asleep at the controls.
+
+---
+
+## 9. Making a look-alike: take the reference apart first
+
+Adapted from raea's `video-decompiler` method (shinyobjectz/raea-skills, TAKE-APART.md), for character cartoons.
+The rule: **take a good film's shape, never its own things.** Someone who saw both should say "the same kind of video", never "a copy".
+
+1. **Pin it.** Run Watch on the reference (`watch.py REF --detail balanced`) and read every frame, plus about 1 s of frames at its busiest moment to time how things move.
+2. **Write a one-page dossier (`REFERENCE.md`)**, keeping four things apart: what you saw (with times), what a tool measured, what the maker said, and your own reading.
+   - **The claim:** one sentence on why it holds attention, checkable against the video.
+   - **Spine:** every second on a time ruler (hook, setup, trigger, time card, consequence, payoff).
+   - **World:** what everything is made of (cut-away organs, maroon cavity, googly eyes) and its rules (outline colour, what never appears).
+   - **Formal idea:** the one move it's built on (e.g. a split screen of the brain control room over the organ).
+   - **Ties:** what's set up and comes back (a gag, a gauge, a prop), and what the return means.
+   - **Hand-overs:** how each cut carries the eye (the same object, a match cut, a whip pan, a hard cut).
+   - **Dynamics:** where it builds, peaks and rests, in picture and loudness.
+   - **Flat notes:** where it drops. Don't copy those.
+   - **Gifts:** small surprises nobody asked for.
+   - **Moves:** how things arrive (how many frames, easing into place).
+3. **Say what you take and what stays theirs.**
+   - **Take:** the order of parts, the formal idea, the hand-overs, the pace, how the words arrive, the job of the background.
+   - **Leave:** their subject, words, characters, art, music, logo and watermark.
+4. **Write your own board** (the script template in section 6) on that shape, then build the hardest shot first, then the whole video.
