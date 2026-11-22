@@ -49,6 +49,8 @@ CHARACTERS = {
     # Soda short
     "bug": {"fixed_pitch": 1.45, "exag": 0.9, "cfg": 0.3},  # squeaky party villains
     "saliva": {"fixed_pitch": 1.3, "exag": 0.85, "cfg": 0.3},  # upbeat lifeguard
+    # Quiet Tooth short
+    "quiet": {"fixed_pitch": 1.2, "exag": 0.45, "cfg": 0.45},  # smug, flat, deadpan
 }
 # ---- Acting per line (from the script's directions) ----------------------------
 # exaggeration: 0.25 flat ... 0.5 default ... 1.0+ over the top

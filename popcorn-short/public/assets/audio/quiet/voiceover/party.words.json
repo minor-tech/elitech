@@ -1,0 +1,22 @@
+[
+ {
+  "text": "No",
+  "startMs": 0.0,
+  "endMs": 100.0
+ },
+ {
+  "text": "alarm,",
+  "startMs": 100.0,
+  "endMs": 360.0
+ },
+ {
+  "text": "party",
+  "startMs": 640.0,
+  "endMs": 780.0
+ },
+ {
+  "text": "time.",
+  "startMs": 780.0,
+  "endMs": 1060.0
+ }
+]

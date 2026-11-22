@@ -1,0 +1,84 @@
+{
+  "_doc": "Why the Quiet Tooth Always Dies First. pause = frames of action before the line. Beats in src/quiet/Scene.tsx derive from these lines.",
+  "tail": 150,
+  "lines": [
+    {
+      "id": "crack",
+      "character": "mo",
+      "pause": 4,
+      "text": "MY CRACK!"
+    },
+    {
+      "id": "fine",
+      "character": "quiet",
+      "pause": 6,
+      "text": "Nothing. I'm FINE."
+    },
+    {
+      "id": "help",
+      "character": "brain",
+      "pause": 14,
+      "text": "Pain means alive. Sending help!"
+    },
+    {
+      "id": "hurts",
+      "character": "mo",
+      "pause": 18,
+      "text": "It HURTS!"
+    },
+    {
+      "id": "good",
+      "character": "brain",
+      "pause": 6,
+      "text": "Good. Hurt means alive."
+    },
+    {
+      "id": "party",
+      "character": "bug",
+      "pause": 60,
+      "text": "No alarm. Party time!"
+    },
+    {
+      "id": "told",
+      "character": "quiet",
+      "pause": 40,
+      "text": "Told you. Fine."
+    },
+    {
+      "id": "rent",
+      "character": "bug",
+      "pause": 30,
+      "text": "Rent's free. We're expanding."
+    },
+    {
+      "id": "pushing",
+      "character": "bone",
+      "pause": 60,
+      "text": "Uh... something's pushing on me."
+    },
+    {
+      "id": "almost",
+      "character": "bug",
+      "pause": 110,
+      "text": "Almost done with the place."
+    },
+    {
+      "id": "scream",
+      "character": "brain",
+      "pause": 178,
+      "text": "Why didn't you SCREAM?!"
+    },
+    {
+      "id": "couldnt",
+      "character": "quiet",
+      "pause": 14,
+      "text": "...couldn't."
+    },
+    {
+      "id": "alarm",
+      "character": "brain",
+      "pause": 96,
+      "text": "Pain is the alarm. Silence is the break-in."
+    }
+  ]
+}

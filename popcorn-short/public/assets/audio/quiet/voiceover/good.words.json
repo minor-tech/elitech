@@ -1,0 +1,22 @@
+[
+ {
+  "text": "Good,",
+  "startMs": 0.0,
+  "endMs": 180.0
+ },
+ {
+  "text": "hurt",
+  "startMs": 520.0,
+  "endMs": 660.0
+ },
+ {
+  "text": "means",
+  "startMs": 660.0,
+  "endMs": 900.0
+ },
+ {
+  "text": "alive.",
+  "startMs": 900.0,
+  "endMs": 1220.0
+ }
+]

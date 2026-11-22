@@ -1,13 +1,13 @@
 import React from 'react';
 import {X} from './style';
 
-export type XEyes = 'open' | 'wide' | 'closed' | 'half' | 'squeeze' | 'dizzy';
+export type XEyes = 'open' | 'wide' | 'closed' | 'half' | 'squeeze' | 'dizzy' | 'hollow';
 export type XBrows = 'none' | 'proud' | 'worried' | 'angry' | 'skeptical';
 export type XMouth = 'smile' | 'grin' | 'o' | 'frown' | 'flat' | 'wavy' | 'grit' | 'smirk' | 'yell';
 export type XArms = 'none' | 'rest' | 'flex' | 'panic' | 'reach';
 
 // Molar in cross-section. Local box 400 x 480, gum line (CEJ) at y=320, root tips at ~470.
-const OUTER =
+export const OUTER =
   'M 50 180 C 30 60, 130 10, 160 50 C 185 80, 215 80, 240 50 C 270 10, 370 60, 350 180 ' +
   'C 340 260, 330 300, 310 360 C 300 420, 290 470, 260 470 C 230 470, 225 400, 200 380 ' +
   'C 175 400, 170 470, 140 470 C 110 470, 100 420, 90 360 C 70 300, 60 260, 50 180 Z';
@@ -16,7 +16,7 @@ const DENTIN =
   'M 84 300 C 72 250, 66 215, 66 175 C 60 95, 128 60, 158 84 C 182 104, 218 104, 242 84 C 272 60, 340 95, 334 175 ' +
   'C 334 215, 328 250, 316 300 C 306 350, 300 420, 290 450 C 284 462, 266 462, 262 448 C 254 410, 240 390, 200 380 ' +
   'C 160 390, 146 410, 138 448 C 134 462, 116 462, 110 450 C 100 420, 94 350, 84 300 Z';
-const PULP =
+export const PULP =
   'M 152 250 C 148 214, 168 200, 182 214 C 192 222, 208 222, 218 214 C 232 200, 252 214, 248 250 ' +
   'C 246 290, 244 320, 246 350 C 250 395, 258 425, 262 444 L 252 446 C 242 420, 230 390, 214 365 L 186 365 ' +
   'C 170 390, 158 420, 148 446 L 138 444 C 142 425, 150 395, 154 350 C 156 320, 154 290, 152 250 Z';
@@ -45,6 +45,14 @@ const Eye: React.FC<{cx: number; kind: XEyes; look: [number, number]; side: -1 |
       <g>
         <ellipse cx={cx} cy={EYE_Y} rx={36} ry={46} fill={X.white} stroke={X.ink} strokeWidth={sw} />
         <path d={`M ${cx} ${EYE_Y + 2} m -4 0 a 4 4 0 1 1 8 0 a 9 9 0 1 1 -17 0 a 14 14 0 1 1 27 0 a 19 19 0 1 1 -36 0`} stroke={X.ink} strokeWidth={5} fill="none" strokeLinecap="round" />
+      </g>
+    );
+  if (kind === 'hollow')
+    // lights on, nobody home: dark empty sockets, no pupils
+    return (
+      <g>
+        <ellipse cx={cx} cy={EYE_Y} rx={36} ry={46} fill="#3B3238" stroke={X.ink} strokeWidth={sw} />
+        <ellipse cx={cx} cy={EYE_Y + 6} rx={22} ry={30} fill="#221C20" />
       </g>
     );
   if (kind === 'closed')
